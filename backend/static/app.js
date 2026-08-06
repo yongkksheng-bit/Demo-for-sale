@@ -9,7 +9,14 @@ const API_BASE_URL = 'https://demo-for-sale.onrender.com/api/v1';
 let selectedIndustry = null;
 let selectedScenario = null;
 let currentSolution = null;
+let currentResearch = null;
 let chatHistory = [];
+
+// ========== 客户管理状态 ==========
+let customers = [];
+let records = [];
+let currentCustomerId = null;
+let editingCustomerId = null;
 
 // ========== 行业数据 ==========
 const industries = [
@@ -105,9 +112,373 @@ const industries = [
 
 // ========== 初始化 ==========
 document.addEventListener('DOMContentLoaded', () => {
+    loadData();
     renderIndustries();
+    renderCustomerList();
     setupEventListeners();
 });
+
+// ========== 客户管理 ==========
+
+// 从本地存储加载数据
+function loadData() {
+    try {
+        const savedCustomers = localStorage.getItem('xiaoshouyi_customers');
+        const savedRecords = localStorage.getItem('xiaoshouyi_records');
+        if (savedCustomers) customers = JSON.parse(savedCustomers);
+        if (savedRecords) records = JSON.parse(savedRecords);
+    } catch (e) {
+        console.error('加载数据失败:', e);
+    }
+}
+
+// 保存数据到本地存储
+function saveData() {
+    try {
+        localStorage.setItem('xiaoshouyi_customers', JSON.stringify(customers));
+        localStorage.setItem('xiaoshouyi_records', JSON.stringify(records));
+    } catch (e) {
+        console.error('保存数据失败:', e);
+    }
+}
+
+// 生成唯一ID
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+// 渲染客户列表
+function renderCustomerList() {
+    const grid = document.getElementById('customer-grid');
+    const empty = document.getElementById('customer-empty');
+    
+    if (customers.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+    }
+    
+    empty.classList.add('hidden');
+    grid.innerHTML = customers.map(customer => {
+        const customerRecords = records.filter(r => r.customerId === customer.id);
+        const avatar = customer.name.charAt(0);
+        return `
+            <div class="bg-white rounded-2xl shadow-sm p-6 card-hover cursor-pointer" onclick="showCustomerDetail('${customer.id}')">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                        ${avatar}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-bold text-dark truncate">${customer.name}</h3>
+                        <p class="text-sm text-gray-500">${customer.industry || '未分类'}</p>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm text-gray-600">
+                    ${customer.contact ? `<div><i class="fa fa-user mr-2 text-gray-400"></i>${customer.contact}${customer.position ? ' · ' + customer.position : ''}</div>` : ''}
+                    ${customer.phone ? `<div><i class="fa fa-phone mr-2 text-gray-400"></i>${customer.phone}</div>` : ''}
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <span class="text-xs text-gray-400">${customerRecords.length} 条记录</span>
+                    <span class="text-primary text-sm font-medium">查看详情 <i class="fa fa-arrow-right ml-1"></i></span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 显示新增客户弹窗
+function showAddCustomerModal() {
+    editingCustomerId = null;
+    document.getElementById('modal-title').textContent = '新增客户';
+    document.getElementById('modal-company-name').value = '';
+    document.getElementById('modal-industry').value = '';
+    document.getElementById('modal-contact').value = '';
+    document.getElementById('modal-position').value = '';
+    document.getElementById('modal-phone').value = '';
+    document.getElementById('modal-email').value = '';
+    document.getElementById('modal-notes').value = '';
+    document.getElementById('customer-modal').classList.remove('hidden');
+}
+
+// 显示编辑客户弹窗
+function showEditCustomerModal(customerId) {
+    const customer = customers.find(c => c.id === customerId);
+    if (!customer) return;
+    
+    editingCustomerId = customerId;
+    document.getElementById('modal-title').textContent = '编辑客户';
+    document.getElementById('modal-company-name').value = customer.name || '';
+    document.getElementById('modal-industry').value = customer.industry || '';
+    document.getElementById('modal-contact').value = customer.contact || '';
+    document.getElementById('modal-position').value = customer.position || '';
+    document.getElementById('modal-phone').value = customer.phone || '';
+    document.getElementById('modal-email').value = customer.email || '';
+    document.getElementById('modal-notes').value = customer.notes || '';
+    document.getElementById('customer-modal').classList.remove('hidden');
+}
+
+// 隐藏弹窗
+function hideCustomerModal() {
+    document.getElementById('customer-modal').classList.add('hidden');
+    editingCustomerId = null;
+}
+
+// 保存客户
+function saveCustomer() {
+    const name = document.getElementById('modal-company-name').value.trim();
+    if (!name) {
+        alert('请输入公司名称');
+        return;
+    }
+    
+    const customerData = {
+        name: name,
+        industry: document.getElementById('modal-industry').value,
+        contact: document.getElementById('modal-contact').value.trim(),
+        position: document.getElementById('modal-position').value.trim(),
+        phone: document.getElementById('modal-phone').value.trim(),
+        email: document.getElementById('modal-email').value.trim(),
+        notes: document.getElementById('modal-notes').value.trim(),
+    };
+    
+    if (editingCustomerId) {
+        // 编辑
+        const index = customers.findIndex(c => c.id === editingCustomerId);
+        if (index !== -1) {
+            customers[index] = { ...customers[index], ...customerData, updatedAt: new Date().toISOString() };
+        }
+    } else {
+        // 新增
+        const newCustomer = {
+            id: generateId(),
+            ...customerData,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+        customers.unshift(newCustomer);
+    }
+    
+    saveData();
+    renderCustomerList();
+    hideCustomerModal();
+    
+    // 如果在详情页，刷新详情
+    if (currentCustomerId === editingCustomerId) {
+        renderCustomerDetail();
+    }
+}
+
+// 编辑当前客户
+function editCurrentCustomer() {
+    if (currentCustomerId) {
+        showEditCustomerModal(currentCustomerId);
+    }
+}
+
+// 删除当前客户
+function deleteCurrentCustomer() {
+    if (!currentCustomerId) return;
+    
+    if (!confirm('确定要删除这个客户吗？所有历史记录也会被删除。')) return;
+    
+    // 删除客户
+    customers = customers.filter(c => c.id !== currentCustomerId);
+    // 删除相关记录
+    records = records.filter(r => r.customerId !== currentCustomerId);
+    
+    saveData();
+    showCustomerList();
+}
+
+// 显示客户详情
+function showCustomerDetail(customerId) {
+    currentCustomerId = customerId;
+    document.getElementById('customer-list-view').classList.add('hidden');
+    document.getElementById('customer-detail-view').classList.remove('hidden');
+    renderCustomerDetail();
+}
+
+// 返回客户列表
+function showCustomerList() {
+    currentCustomerId = null;
+    document.getElementById('customer-detail-view').classList.add('hidden');
+    document.getElementById('customer-list-view').classList.remove('hidden');
+    renderCustomerList();
+}
+
+// 渲染客户详情
+function renderCustomerDetail() {
+    const customer = customers.find(c => c.id === currentCustomerId);
+    if (!customer) return;
+    
+    document.getElementById('detail-avatar').textContent = customer.name.charAt(0);
+    document.getElementById('detail-name').textContent = customer.name;
+    document.getElementById('detail-industry').textContent = customer.industry || '未分类';
+    document.getElementById('detail-contact').textContent = customer.contact || '暂无联系人';
+    document.getElementById('detail-position').textContent = customer.position || '';
+    document.getElementById('detail-notes').textContent = customer.notes || '';
+    
+    // 渲染历史记录
+    renderCustomerRecords();
+}
+
+// 渲染客户历史记录
+function renderCustomerRecords() {
+    const container = document.getElementById('customer-records');
+    const empty = document.getElementById('records-empty');
+    
+    const customerRecords = records
+        .filter(r => r.customerId === currentCustomerId)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    if (customerRecords.length === 0) {
+        container.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+    }
+    
+    empty.classList.add('hidden');
+    
+    const typeConfig = {
+        research: { icon: 'fa-search', color: 'blue', label: '客户背调' },
+        solution: { icon: 'fa-lightbulb-o', color: 'green', label: '方案建议书' },
+        script: { icon: 'fa-microphone', color: 'purple', label: '销售话术' },
+        objection: { icon: 'fa-shield', color: 'orange', label: '异议处理' },
+        checklist: { icon: 'fa-check-square-o', color: 'teal', label: '拜访清单' },
+        competitor: { icon: 'fa-balance-scale', color: 'indigo', label: '竞品对比' }
+    };
+    
+    container.innerHTML = customerRecords.map(record => {
+        const config = typeConfig[record.type] || { icon: 'fa-file', color: 'gray', label: '记录' };
+        const date = new Date(record.createdAt).toLocaleString();
+        return `
+            <div class="bg-white rounded-xl shadow-sm p-5 card-hover">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-${config.color}-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa ${config.icon} text-${config.color}-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark">${record.title}</h4>
+                            <p class="text-sm text-gray-500 mt-1">${config.label} · ${date}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="viewRecord('${record.id}')" class="px-3 py-1 text-sm text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                            <i class="fa fa-eye mr-1"></i> 查看
+                        </button>
+                        <button onclick="deleteRecord('${record.id}')" class="px-3 py-1 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                            <i class="fa fa-trash mr-1"></i> 删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 添加历史记录
+function addRecord(customerId, type, title, content) {
+    if (!customerId) return;
+    
+    const record = {
+        id: generateId(),
+        customerId: customerId,
+        type: type,
+        title: title,
+        content: content,
+        createdAt: new Date().toISOString()
+    };
+    
+    records.unshift(record);
+    saveData();
+}
+
+// 查看记录
+function viewRecord(recordId) {
+    const record = records.find(r => r.id === recordId);
+    if (!record) return;
+    
+    // 这里可以做一个弹窗查看，或者跳转到对应页面
+    // 简单起见，先复制到剪贴板并提示
+    navigator.clipboard.writeText(record.content).then(() => {
+        alert('内容已复制到剪贴板');
+    });
+}
+
+// 删除记录
+function deleteRecord(recordId) {
+    if (!confirm('确定要删除这条记录吗？')) return;
+    records = records.filter(r => r.id !== recordId);
+    saveData();
+    renderCustomerRecords();
+}
+
+// ========== 快捷功能联动 ==========
+
+// 从客户详情生成背调
+function generateResearchFromCustomer() {
+    const customer = customers.find(c => c.id === currentCustomerId);
+    if (!customer) return;
+    
+    // 跳转到背调页面，自动填充
+    showSection('research');
+    document.getElementById('company-name').value = customer.name;
+    document.getElementById('research-industry').value = customer.industry || '';
+    document.getElementById('research-position').value = customer.position || '';
+}
+
+// 从客户详情生成方案
+function generateSolutionFromCustomer() {
+    const customer = customers.find(c => c.id === currentCustomerId);
+    if (!customer) return;
+    
+    // 跳转到方案页面，自动填充行业
+    showSection('solution');
+    if (customer.industry) {
+        // 找到对应的行业索引并选中
+        const industryIndex = industries.findIndex(i => i.name === customer.industry);
+        if (industryIndex !== -1) {
+            selectIndustry(industryIndex);
+        }
+    }
+}
+
+// 从客户详情生成话术
+function generateScriptFromCustomer() {
+    const customer = customers.find(c => c.id === currentCustomerId);
+    if (!customer) return;
+    
+    showSection('tools');
+    // 可以自动填充，这里先简单跳转
+    alert('已跳转到销售工具箱，请填写相关信息');
+}
+
+// 从客户详情生成异议处理
+function generateObjectionFromCustomer() {
+    showSection('tools');
+    alert('已跳转到销售工具箱，请填写异议内容');
+}
+
+// 从客户详情生成拜访清单
+function generateChecklistFromCustomer() {
+    const customer = customers.find(c => c.id === currentCustomerId);
+    if (!customer) return;
+    
+    showSection('tools');
+    document.getElementById('visit-company').value = customer.name;
+    document.getElementById('visit-industry').value = customer.industry || '';
+    document.getElementById('visit-position').value = customer.position || '';
+}
+
+// 从客户详情打开ROI
+function showROIFromCustomer() {
+    showSection('tools');
+    // 滚动到ROI计算器
+    setTimeout(() => {
+        document.getElementById('roi-calculator')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+}
 
 // ========== 页面切换 ==========
 function showSection(sectionId) {
@@ -299,6 +670,13 @@ async function generateSolution() {
             content: fullContent,
             products: extractProductsFromContent(fullContent)
         };
+        
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            addRecord(currentCustomerId, 'solution', 
+                `${selectedIndustry}行业${selectedScenario}解决方案`, 
+                fullContent);
+        }
         
         // 渲染产品标签
         renderProductTags(currentSolution.products);
@@ -547,6 +925,15 @@ async function generateSalesScript() {
         document.getElementById('script-content').innerHTML = marked.parse(data.script);
         document.getElementById('script-result').classList.remove('hidden');
         
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            const industry = document.getElementById('script-industry').value;
+            const scenario = document.getElementById('script-scenario').value;
+            addRecord(currentCustomerId, 'script', 
+                `${industry || ''}${scenario || ''}销售话术`, 
+                data.script);
+        }
+        
     } catch (error) {
         console.error('生成话术失败:', error);
         alert('生成失败，请检查后端服务');
@@ -588,6 +975,14 @@ async function handleObjection() {
         document.getElementById('objection-content').innerHTML = marked.parse(data.response);
         document.getElementById('objection-result').classList.remove('hidden');
         
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            const objection = document.getElementById('objection-input').value.trim();
+            addRecord(currentCustomerId, 'objection', 
+                `异议处理：${objection.substring(0, 20)}...`, 
+                data.response);
+        }
+        
     } catch (error) {
         console.error('生成应对话术失败:', error);
         alert('生成失败，请检查后端服务');
@@ -626,6 +1021,14 @@ async function generateCompetitorCompare() {
 
         document.getElementById('competitor-content').innerHTML = marked.parse(data.comparison);
         document.getElementById('competitor-result').classList.remove('hidden');
+        
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            const competitor = document.getElementById('competitor-select').value;
+            addRecord(currentCustomerId, 'competitor', 
+                `竞品对比：${competitor}`, 
+                data.comparison);
+        }
 
     } catch (error) {
         console.error('生成竞品对比失败:', error);
@@ -694,6 +1097,11 @@ async function generateResearch() {
 
         const data = await response.json();
         currentResearch = data;
+
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            addRecord(currentCustomerId, 'research', `${data.company_name} 背调报告`, data.content);
+        }
 
         // 渲染结果
         document.getElementById('research-title').textContent = `${data.company_name} 背调报告`;
@@ -769,6 +1177,14 @@ async function generateVisitChecklist() {
 
         document.getElementById('visit-content').innerHTML = marked.parse(data.checklist);
         document.getElementById('visit-result').classList.remove('hidden');
+        
+        // 如果有当前客户，保存到历史记录
+        if (currentCustomerId) {
+            const company = document.getElementById('visit-company').value.trim();
+            addRecord(currentCustomerId, 'checklist', 
+                `${company} 拜访准备清单`, 
+                data.checklist);
+        }
 
     } catch (error) {
         console.error('生成拜访清单失败:', error);

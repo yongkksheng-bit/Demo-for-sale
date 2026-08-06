@@ -113,17 +113,17 @@
                     <button onclick="showSection('hero')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-home mr-1"></i> <span class="hidden sm:inline">首页</span>
                     </button>
+                    <button onclick="showSection('customers')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
+                        <i class="fa fa-address-book mr-1"></i> <span class="hidden sm:inline">客户管理</span>
+                    </button>
                     <button onclick="showSection('research')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-search mr-1"></i> <span class="hidden sm:inline">客户背调</span>
                     </button>
                     <button onclick="showSection('solution')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-lightbulb-o mr-1"></i> <span class="hidden sm:inline">方案生成</span>
                     </button>
-                    <button onclick="showSection('chat')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-comments mr-1"></i> <span class="hidden sm:inline">智能对话</span>
-                    </button>
                     <button onclick="showSection('tools')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-wrench mr-1"></i> <span class="hidden sm:inline">销售工具箱</span>
+                        <i class="fa fa-wrench mr-1"></i> <span class="hidden sm:inline">工具箱</span>
                     </button>
                 </div>
             </div>
@@ -299,6 +299,202 @@
                 </div>
             </div>
         </section>
+
+        <!-- 客户管理页面 -->
+        <section id="customers" class="section hidden py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- 客户列表视图 -->
+                <div id="customer-list-view">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-3xl font-bold text-dark mb-2">📇 客户管理</h2>
+                            <p class="text-gray-600">管理你的客户，所有资料和历史记录一目了然</p>
+                        </div>
+                        <button onclick="showAddCustomerModal()" class="px-6 py-3 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
+                            <i class="fa fa-plus mr-2"></i> 新增客户
+                        </button>
+                    </div>
+
+                    <!-- 客户卡片网格 -->
+                    <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- 客户卡片会动态生成 -->
+                    </div>
+
+                    <!-- 空状态 -->
+                    <div id="customer-empty" class="bg-white rounded-2xl shadow-sm p-16 text-center hidden">
+                        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+                            <i class="fa fa-address-book-o text-4xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">还没有客户</h3>
+                        <p class="text-gray-500 mb-6">点击右上角"新增客户"，开始管理你的客户资源</p>
+                        <button onclick="showAddCustomerModal()" class="px-6 py-3 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
+                            <i class="fa fa-plus mr-2"></i> 添加第一个客户
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 客户详情视图 -->
+                <div id="customer-detail-view" class="hidden">
+                    <!-- 返回按钮 -->
+                    <button onclick="showCustomerList()" class="mb-6 text-gray-600 hover:text-primary transition-colors">
+                        <i class="fa fa-arrow-left mr-2"></i> 返回客户列表
+                    </button>
+
+                    <!-- 客户信息头部 -->
+                    <div class="bg-white rounded-2xl shadow-sm p-8 mb-8">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start gap-6">
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center text-white text-2xl font-bold">
+                                    <span id="detail-avatar">客</span>
+                                </div>
+                                <div>
+                                    <h2 id="detail-name" class="text-2xl font-bold text-dark mb-2">客户名称</h2>
+                                    <div class="flex items-center gap-4 text-gray-500 text-sm">
+                                        <span><i class="fa fa-industry mr-1"></i> <span id="detail-industry">-</span></span>
+                                        <span><i class="fa fa-user mr-1"></i> <span id="detail-contact">-</span></span>
+                                        <span><i class="fa fa-briefcase mr-1"></i> <span id="detail-position">-</span></span>
+                                    </div>
+                                    <p id="detail-notes" class="text-gray-600 mt-3"></p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editCurrentCustomer()" class="px-4 py-2 border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                                    <i class="fa fa-edit mr-1"></i> 编辑
+                                </button>
+                                <button onclick="deleteCurrentCustomer()" class="px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm hover:bg-red-50 transition-colors">
+                                    <i class="fa fa-trash mr-1"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 快捷功能区 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-dark mb-4">⚡ 快捷功能</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                            <button onclick="generateResearchFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-100 flex items-center justify-center">
+                                    <i class="fa fa-search text-blue-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">客户背调</div>
+                            </button>
+                            <button onclick="generateSolutionFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-green-100 flex items-center justify-center">
+                                    <i class="fa fa-lightbulb-o text-green-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">生成方案</div>
+                            </button>
+                            <button onclick="generateScriptFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-purple-100 flex items-center justify-center">
+                                    <i class="fa fa-microphone text-purple-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">销售话术</div>
+                            </button>
+                            <button onclick="generateObjectionFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-orange-100 flex items-center justify-center">
+                                    <i class="fa fa-shield text-orange-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">异议处理</div>
+                            </button>
+                            <button onclick="generateChecklistFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-teal-100 flex items-center justify-center">
+                                    <i class="fa fa-check-square-o text-teal-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">拜访清单</div>
+                            </button>
+                            <button onclick="showROIFromCustomer()" class="bg-white rounded-xl p-5 shadow-sm card-hover text-center">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-pink-100 flex items-center justify-center">
+                                    <i class="fa fa-calculator text-pink-600 text-xl"></i>
+                                </div>
+                                <div class="font-semibold text-dark text-sm">ROI 计算</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 历史记录 -->
+                    <div>
+                        <h3 class="text-xl font-bold text-dark mb-4">📝 历史记录</h3>
+                        <div id="customer-records" class="space-y-4">
+                            <!-- 历史记录会动态生成 -->
+                        </div>
+                        <div id="records-empty" class="bg-white rounded-2xl shadow-sm p-12 text-center hidden">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fa fa-file-text-o text-2xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-500">还没有历史记录，点击上方快捷功能开始生成</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 新增/编辑客户弹窗 -->
+        <div id="customer-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 id="modal-title" class="text-xl font-bold text-dark">新增客户</h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">公司名称 *</label>
+                        <input type="text" id="modal-company-name" placeholder="例如：字节跳动"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">所属行业</label>
+                        <select id="modal-industry" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            <option value="">请选择行业</option>
+                            <option value="零售电商">零售电商</option>
+                            <option value="金融">金融</option>
+                            <option value="制造">制造业</option>
+                            <option value="汽车">汽车</option>
+                            <option value="教育">教育</option>
+                            <option value="医疗健康">医疗健康</option>
+                            <option value="文旅传媒">文旅传媒</option>
+                            <option value="政企">政企</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">联系人</label>
+                            <input type="text" id="modal-contact" placeholder="姓名"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">职位</label>
+                            <input type="text" id="modal-position" placeholder="例如：CTO"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">电话</label>
+                            <input type="text" id="modal-phone" placeholder="手机号"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
+                            <input type="email" id="modal-email" placeholder="邮箱地址"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
+                        <textarea id="modal-notes" rows="3" placeholder="客户背景、需求、跟进状态等..."
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-100 flex justify-end gap-3">
+                    <button onclick="hideCustomerModal()" class="px-6 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                    <button onclick="saveCustomer()" class="px-6 py-2 bg-gradient-primary rounded-lg text-white hover:opacity-90 transition-all">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- 客户背调区域 -->
         <section id="research" class="section hidden py-16 bg-gray-50">
