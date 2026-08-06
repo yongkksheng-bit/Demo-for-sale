@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 后端服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: volcengine-solution-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ARK_API_KEY=${ARK_API_KEY}
+      - ARK_BASE_URL=${ARK_BASE_URL}
+      - ARK_MODEL=${ARK_MODEL}
+      - DEBUG=false
+      - USE_MOCK=${USE_MOCK:-false}
+    volumes:
+      - ./data:/app/data
+    networks:
+      - app-network
+
+  # 前端服务
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: volcengine-solution-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  data:
