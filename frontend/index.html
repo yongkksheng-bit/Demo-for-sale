@@ -544,6 +544,77 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ROI 计算器 -->
+                    <div class="md:col-span-2 bg-gradient-to-r from-primary to-secondary rounded-2xl shadow-lg p-8 text-white">
+                        <div class="flex items-center mb-6">
+                            <div class="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center mr-4">
+                                <i class="fa fa-calculator text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold">ROI 投资回报计算器</h3>
+                                <p class="text-white/80 text-sm">一键计算方案投资回报，用数据打动客户</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- 左侧：输入 -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-white/90 mb-2">客户团队规模（人）</label>
+                                    <input id="roi-people" type="number" value="50" oninput="calculateROI()" class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:border-white/40 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-white/90 mb-2">人均月薪（元）</label>
+                                    <input id="roi-salary" type="number" value="15000" oninput="calculateROI()" class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:border-white/40 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-white/90 mb-2">效率提升预期（%）</label>
+                                    <input id="roi-efficiency" type="number" value="30" oninput="calculateROI()" class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:border-white/40 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-white/90 mb-2">方案年费（万元）</label>
+                                    <input id="roi-cost" type="number" value="20" oninput="calculateROI()" class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-white/30 focus:border-white/40 outline-none">
+                                </div>
+                            </div>
+                            
+                            <!-- 右侧：结果 -->
+                            <div class="bg-white/10 rounded-xl p-6 space-y-4">
+                                <h4 class="font-semibold text-lg mb-4">📊 计算结果</h4>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white/80">年节省人力成本</span>
+                                    <span id="roi-saving" class="text-2xl font-bold">270万</span>
+                                </div>
+                                
+                                <div class="h-px bg-white/20"></div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white/80">方案投入成本</span>
+                                    <span id="roi-cost-result" class="text-xl font-semibold">20万</span>
+                                </div>
+                                
+                                <div class="h-px bg-white/20"></div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white/80">投资回报率（ROI）</span>
+                                    <span id="roi-ratio" class="text-3xl font-bold text-yellow-300">1250%</span>
+                                </div>
+                                
+                                <div class="h-px bg-white/20"></div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white/80">投资回报周期</span>
+                                    <span id="roi-period" class="text-xl font-semibold text-green-300">0.9个月</span>
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-white/10 rounded-lg text-sm text-white/90">
+                                    💡 <strong>销售话术建议：</strong>
+                                    <span id="roi-suggestion">不到1个月就能回本，当年净赚250万！</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 工具说明 -->

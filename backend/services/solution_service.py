@@ -16,9 +16,10 @@ class SolutionService:
     
     def __init__(self):
         self._llm = None
+        self._streaming_llm = None
     
     def _get_llm(self):
-        """获取大模型实例"""
+        """获取大模型实例（非流式）"""
         if self._llm is None:
             self._llm = ChatOpenAI(
                 model=settings.ARK_MODEL,
@@ -30,6 +31,20 @@ class SolutionService:
                 streaming=False
             )
         return self._llm
+    
+    def _get_streaming_llm(self):
+        """获取流式大模型实例"""
+        if self._streaming_llm is None:
+            self._streaming_llm = ChatOpenAI(
+                model=settings.ARK_MODEL,
+                openai_api_key=settings.ARK_API_KEY,
+                openai_api_base=settings.ARK_BASE_URL,
+                temperature=0.7,
+                max_tokens=4096,
+                request_timeout=120,
+                streaming=True
+            )
+        return self._streaming_llm
     
     def _retrieve_context(self, industry: str, scenario: str, k: int = 8) -> str:
         """检索相关上下文（向量库可选，不可用时返回空）"""
@@ -166,6 +181,127 @@ class SolutionService:
             "content": result,
             "products": self._extract_products(result)
         }
+    
+    def generate_solution_stream(self, industry: str, scenario: str,
+                                  company_size: str = "中型企业",
+                                  custom_requirements: str = ""):
+        """
+        流式生成方案建议书（SSE）
+        
+        Args:
+            industry: 行业
+            scenario: 业务场景/痛点
+            company_size: 企业规模
+            custom_requirements: 定制化需求
+        
+        Yields:
+            每个生成的文本块
+        """
+        # Mock 模式 - 模拟流式输出
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式生成方案")
+            mock_result = mock_service.generate_solution(industry, scenario, company_size, custom_requirements)
+            content = mock_result["content"]
+            # 模拟逐字输出，每几个字返回一次
+            for i in range(0, len(content), 3):
+                yield content[i:i+3]
+            return
+        
+        llm = self._get_streaming_llm()
+        context = self._retrieve_context(industry, scenario)
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是火山引擎的资深解决方案架构师，拥有10年以上企业数字化转型咨询经验。
+
+请根据以下信息，为客户生成一份专业、有说服力的解决方案建议书。
+
+【客户信息】
+- 行业：{industry}
+- 企业规模：{company_size}
+- 业务场景/痛点：{scenario}
+- 定制化需求：{custom_requirements}
+
+【参考资料】
+{context}
+
+【方案结构要求】
+请严格按照以下结构生成方案，使用 Markdown 格式：
+
+# {industry}行业{scenario}解决方案建议书
+
+## 一、行业背景与挑战
+- 行业发展趋势
+- 企业面临的核心痛点
+- 数字化转型的必要性
+
+## 二、解决方案概述
+- 方案整体架构
+- 核心设计理念
+- 方案亮点与优势
+
+## 三、火山引擎产品组合
+详细列出使用的火山引擎产品，每个产品包含：
+- 产品名称
+- 核心功能
+- 在本方案中的作用
+- 为什么选择这个产品
+
+## 四、方案实施路径
+- 分阶段实施计划
+- 每个阶段的目标和交付物
+- 预计时间周期
+
+## 五、客户价值与ROI
+- 业务价值（效率提升、成本降低、收入增长等）
+- 技术价值（架构升级、能力沉淀等）
+- 投资回报预估
+
+## 六、为什么选择火山引擎
+- 技术优势
+- 服务能力
+- 成功案例
+- 生态优势
+
+## 七、下一步行动建议
+- 立即可以开展的工作
+- 需要客户配合的事项
+
+【火山引擎核心产品清单（请优先从以下产品中选择推荐）】
+- 豆包大模型：字节跳动自研大语言模型，支持通用问答、代码生成、内容创作等
+- 火山方舟：大模型服务平台，提供模型推理、微调、部署等一站式服务
+- 智能推荐引擎：基于字节跳动多年推荐算法积累，提供千人千面个性化推荐
+- 智能客服：基于大模型的智能对话机器人，支持多轮对话、知识库问答
+- 数据中台：企业级数据治理与分析平台，统一数据管理，打破数据孤岛
+- 视觉智能：计算机视觉能力，包括图像识别、OCR、人脸检测、工业质检等
+- 语音技术：语音识别、语音合成、声纹识别等全栈语音能力
+- 视频云：视频点播、直播、实时音视频、视频剪辑等音视频技术
+- 内容安全：文本、图片、视频内容审核，保障内容合规
+- 云基础：计算、存储、网络、安全等全栈云基础设施
+
+【要求】
+1. 内容要专业、具体、有数据支撑，不要空泛
+2. 产品推荐请优先从上述核心产品清单中选择，每个产品说明在方案中的作用
+3. 自然地突出火山引擎的差异化优势（字节跳动同款技术、经过亿级用户验证等）
+4. 语言要有说服力，像真正的咨询顾问写的
+5. 每个部分都要有实质内容，不要敷衍
+6. 总字数控制在1800-2500字左右，重点突出，不要啰嗦
+7. 使用 Markdown 格式，层级清晰
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        print(f"🎯 正在流式生成方案: {industry} - {scenario}")
+        
+        # 流式生成
+        for chunk in chain.stream({
+            "industry": industry,
+            "scenario": scenario,
+            "company_size": company_size,
+            "custom_requirements": custom_requirements,
+            "context": context
+        }):
+            yield chunk
     
     def _extract_products(self, content: str) -> List[str]:
         """从方案内容中提取提到的火山引擎产品"""

@@ -234,7 +234,8 @@ async function generateSolution() {
         const companySize = document.getElementById('company-size').value;
         const customReq = document.getElementById('custom-req').value;
         
-        const response = await fetch(`${API_BASE_URL}/solution/generate`, {
+        // 调用流式接口
+        const response = await fetch(`${API_BASE_URL}/solution/generate-stream`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -249,11 +250,58 @@ async function generateSolution() {
             throw new Error('生成失败');
         }
         
-        const data = await response.json();
-        currentSolution = data;
+        // 切换到显示内容状态
+        clearInterval(loadingInterval);
+        loadingState.classList.add('hidden');
+        solutionHeader.classList.remove('hidden');
+        solutionMarkdown.classList.remove('hidden');
+        adjustBar.classList.remove('hidden');
         
-        // 渲染方案
-        renderSolution(data);
+        // 读取 SSE 流
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullContent = '';
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+            
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const data = line.slice(6);
+                    if (data === '[DONE]') {
+                        // 生成完成
+                        break;
+                    }
+                    try {
+                        const parsed = JSON.parse(data);
+                        if (parsed.content) {
+                            fullContent += parsed.content;
+                            // 实时渲染 Markdown
+                            solutionMarkdown.innerHTML = marked.parse(fullContent);
+                            // 滚动到底部
+                            solutionMarkdown.scrollTop = solutionMarkdown.scrollHeight;
+                        }
+                    } catch (e) {
+                        // 忽略解析错误
+                    }
+                }
+            }
+        }
+        
+        // 保存当前方案
+        currentSolution = {
+            industry: selectedIndustry,
+            scenario: selectedScenario,
+            content: fullContent,
+            products: extractProductsFromContent(fullContent)
+        };
+        
+        // 渲染产品标签
+        renderProductTags(currentSolution.products);
         
     } catch (error) {
         console.error('生成方案失败:', error);
@@ -267,20 +315,32 @@ async function generateSolution() {
     }
 }
 
+// 从内容中提取产品（简单版，流式生成时用）
+function extractProductsFromContent(content) {
+    const products = [];
+    const productNames = [
+        '豆包大模型', '火山方舟', '智能推荐引擎', '智能客服',
+        '数据中台', '视觉智能', '语音技术', '视频云', '内容安全'
+    ];
+    for (const name of productNames) {
+        if (content.includes(name)) {
+            products.push(name);
+        }
+    }
+    return products;
+}
+
 function renderSolution(data) {
     const solutionHeader = document.getElementById('solution-header');
     const solutionMarkdown = document.getElementById('solution-markdown');
     const adjustBar = document.getElementById('adjust-bar');
-    const productTags = document.getElementById('product-tags');
     
     // 更新标题
     document.getElementById('solution-title').textContent = `${data.industry}行业解决方案建议书`;
     document.getElementById('solution-subtitle').textContent = `场景：${data.scenario} · 企业规模：${data.company_size}`;
     
     // 产品标签
-    productTags.innerHTML = data.products.map(p => `
-        <span class="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full">${p}</span>
-    `).join('');
+    renderProductTags(data.products);
     
     // 渲染 Markdown
     solutionMarkdown.innerHTML = marked.parse(data.content);
@@ -289,6 +349,14 @@ function renderSolution(data) {
     solutionHeader.classList.remove('hidden');
     solutionMarkdown.classList.remove('hidden');
     adjustBar.classList.remove('hidden');
+}
+
+function renderProductTags(products) {
+    const productTags = document.getElementById('product-tags');
+    if (!productTags || !products) return;
+    productTags.innerHTML = products.map(p => `
+        <span class="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full">${p}</span>
+    `).join('');
 }
 
 async function adjustSolution() {

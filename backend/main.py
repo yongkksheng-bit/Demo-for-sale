@@ -4,8 +4,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from contextlib import asynccontextmanager
+import json
 
 from config import settings
 from models.schemas import (
@@ -224,6 +225,33 @@ async def generate_solution(request: SolutionGenerateRequest):
     )
     
     return SolutionGenerateResponse(**result)
+
+
+@app.post("/api/v1/solution/generate-stream")
+async def generate_solution_stream(request: SolutionGenerateRequest):
+    """流式生成方案建议书（SSE）"""
+    from services.solution_service import solution_service
+    
+    async def event_generator():
+        for chunk in solution_service.generate_solution_stream(
+            industry=request.industry,
+            scenario=request.scenario,
+            company_size=request.company_size,
+            custom_requirements=request.custom_requirements
+        ):
+            yield f"data: {json.dumps({'content': chunk})}\n\n"
+        # 结束标记
+        yield "data: [DONE]\n\n"
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
 
 
 @app.post("/api/v1/solution/adjust", response_model=SolutionAdjustResponse)
