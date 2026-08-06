@@ -62,17 +62,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 挂载静态文件（前端页面）
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
 # ========== 基础接口 ==========
-
-@app.get("/")
-async def root():
-    """根路径 - 返回前端页面"""
-    return FileResponse("static/index.html")
-
 
 @app.get("/api/info")
 async def api_info():
@@ -303,6 +293,10 @@ async def generate_visit_checklist(request: VisitChecklistRequest):
     )
     
     return VisitChecklistResponse(checklist=checklist)
+
+
+# 挂载静态文件（前端页面）- 必须放在所有路由最后
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
 if __name__ == "__main__":
