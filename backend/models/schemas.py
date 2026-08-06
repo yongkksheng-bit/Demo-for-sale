@@ -128,6 +128,22 @@ class VisitChecklistResponse(BaseModel):
     checklist: str = Field(..., description="准备清单内容")
 
 
+class CompanyResearchRequest(BaseModel):
+    """客户背调请求"""
+    company_name: str = Field(..., description="公司名称", min_length=1)
+    industry: str = Field(default="", description="所属行业")
+    position: str = Field(default="", description="拜访对象职位")
+    focus: str = Field(default="", description="重点关注方向")
+
+
+class CompanyResearchResponse(BaseModel):
+    """客户背调响应"""
+    company_name: str = Field(..., description="公司名称")
+    industry: str = Field(default="", description="行业")
+    position: str = Field(default="", description="拜访对象职位")
+    content: str = Field(..., description="背调报告内容")
+
+
 # ========== 行业与场景 ==========
 
 class IndustryInfo(BaseModel):

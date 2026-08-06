@@ -18,6 +18,7 @@ from models.schemas import (
     ObjectionRequest, ObjectionResponse,
     CompetitorCompareRequest, CompetitorCompareResponse,
     VisitChecklistRequest, VisitChecklistResponse,
+    CompanyResearchRequest, CompanyResearchResponse,
     IndustryListResponse, IndustryInfo
 )
 
@@ -321,6 +322,21 @@ async def generate_visit_checklist(request: VisitChecklistRequest):
     )
     
     return VisitChecklistResponse(checklist=checklist)
+
+
+@app.post("/api/v1/company-research", response_model=CompanyResearchResponse)
+async def generate_company_research(request: CompanyResearchRequest):
+    """生成客户背调报告"""
+    from services.solution_service import solution_service
+    
+    result = solution_service.generate_company_research(
+        company_name=request.company_name,
+        industry=request.industry,
+        position=request.position,
+        focus=request.focus
+    )
+    
+    return CompanyResearchResponse(**result)
 
 
 # 挂载静态文件（前端页面）- 必须放在所有路由最后

@@ -636,6 +636,105 @@ async function generateCompetitorCompare() {
     }
 }
 
+// ========== 客户背调 ==========
+let currentResearch = null;
+
+async function generateResearch() {
+    const companyName = document.getElementById('company-name').value.trim();
+    const industry = document.getElementById('research-industry').value.trim();
+    const position = document.getElementById('research-position').value.trim();
+    const focus = document.getElementById('research-focus').value.trim();
+
+    if (!companyName) {
+        alert('请输入公司名称');
+        return;
+    }
+
+    const btn = document.getElementById('research-btn');
+    const emptyState = document.getElementById('research-empty');
+    const loadingState = document.getElementById('research-loading');
+    const resultState = document.getElementById('research-result');
+
+    // 显示加载状态
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 生成中...';
+    emptyState.classList.add('hidden');
+    resultState.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+
+    // 模拟加载进度文字
+    const loadingTexts = [
+        '正在收集公司基本信息...',
+        '正在分析最新动态与新闻...',
+        '正在梳理行业与竞品...',
+        '正在挖掘潜在需求...',
+        '正在生成拜访策略建议...'
+    ];
+    let textIndex = 0;
+    const loadingInterval = setInterval(() => {
+        textIndex = (textIndex + 1) % loadingTexts.length;
+        document.getElementById('research-loading-text').textContent = loadingTexts[textIndex];
+    }, 1500);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/company-research`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                company_name: companyName,
+                industry: industry,
+                position: position,
+                focus: focus
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('生成失败');
+        }
+
+        const data = await response.json();
+        currentResearch = data;
+
+        // 渲染结果
+        document.getElementById('research-title').textContent = `${data.company_name} 背调报告`;
+        document.getElementById('research-subtitle').textContent = 
+            `${data.industry || '未知行业'} · 生成于 ${new Date().toLocaleString()}`;
+        document.getElementById('research-content').innerHTML = marked.parse(data.content);
+
+        // 显示结果
+        loadingState.classList.add('hidden');
+        resultState.classList.remove('hidden');
+
+    } catch (error) {
+        console.error('生成背调报告失败:', error);
+        alert('生成失败，请检查后端服务');
+        emptyState.classList.remove('hidden');
+    } finally {
+        clearInterval(loadingInterval);
+        loadingState.classList.add('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa fa-search mr-2"></i> 生成背调报告';
+    }
+}
+
+function copyResearch() {
+    if (!currentResearch) return;
+    navigator.clipboard.writeText(currentResearch.content).then(() => {
+        alert('已复制到剪贴板');
+    });
+}
+
+function downloadResearch() {
+    if (!currentResearch) return;
+    const blob = new Blob([currentResearch.content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${currentResearch.company_name}_背调报告.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 // ========== 拜访准备清单 ==========
 async function generateVisitChecklist() {
     const company = document.getElementById('visit-company').value.trim();

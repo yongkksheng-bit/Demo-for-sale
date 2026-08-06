@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>火山引擎 · 智能方案顾问</title>
+    <title>销售易 - AI 销售助手，让每个销售都成为 Top Sales</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -105,13 +105,16 @@
                         <i class="fa fa-bolt text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-dark">火山引擎 · 智能方案顾问</h1>
-                        <p class="text-xs text-gray-500">AI 驱动的销售方案生成引擎</p>
+                        <h1 class="text-lg font-bold text-dark">销售易</h1>
+                        <p class="text-xs text-gray-500">AI 销售全流程助手</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
                     <button onclick="showSection('hero')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-home mr-1"></i> <span class="hidden sm:inline">首页</span>
+                    </button>
+                    <button onclick="showSection('research')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
+                        <i class="fa fa-search mr-1"></i> <span class="hidden sm:inline">客户背调</span>
                     </button>
                     <button onclick="showSection('solution')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-lightbulb-o mr-1"></i> <span class="hidden sm:inline">方案生成</span>
@@ -142,25 +145,25 @@
                 <div class="text-center max-w-4xl mx-auto">
                     <div class="inline-flex items-center px-4 py-2 rounded-full glass mb-8">
                         <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                        <span class="text-sm text-gray-300">基于火山方舟大模型 · 实时生成</span>
+                        <span class="text-sm text-gray-300">AI 驱动的销售全流程助手 · 已服务 10000+ 销售</span>
                     </div>
                     
                     <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        30秒生成一份
-                        <span class="text-gradient">专业级方案建议书</span>
+                        让每个销售都成为
+                        <span class="text-gradient">Top Sales</span>
                     </h1>
                     
                     <p class="text-base sm:text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-                        输入行业和业务场景，AI 自动为你生成完整的火山引擎解决方案。<br class="hidden sm:block">
-                        从行业分析到产品组合，从实施路径到 ROI 估算，一键搞定。
+                        客户背调、方案生成、话术准备、异议处理、ROI 计算，<br class="hidden sm:block">
+                        一个 AI 助手搞定销售全流程，效率提升 10 倍。
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 md:mb-16">
-                        <button onclick="showSection('solution')" class="px-8 py-4 bg-gradient-primary rounded-xl font-semibold text-lg hover:opacity-90 transition-all glow hover:scale-105">
-                            <i class="fa fa-rocket mr-2"></i> 立即开始生成方案
+                        <button onclick="showSection('research')" class="px-8 py-4 bg-gradient-primary rounded-xl font-semibold text-lg hover:opacity-90 transition-all glow hover:scale-105">
+                            <i class="fa fa-search mr-2"></i> 客户背调
                         </button>
-                        <button onclick="showSection('chat')" class="px-8 py-4 glass rounded-xl font-semibold text-lg hover:bg-white/10 transition-all">
-                            <i class="fa fa-comments mr-2"></i> 试试智能对话
+                        <button onclick="showSection('solution')" class="px-8 py-4 glass rounded-xl font-semibold text-lg hover:bg-white/10 transition-all">
+                            <i class="fa fa-lightbulb-o mr-2"></i> 生成方案
                         </button>
                     </div>
                     
@@ -170,22 +173,265 @@
                             <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-4 mx-auto">
                                 <i class="fa fa-bolt text-primary text-xl"></i>
                             </div>
-                            <h3 class="text-lg font-semibold mb-2">极速生成</h3>
-                            <p class="text-gray-400 text-sm">30秒内生成完整方案，效率提升10倍</p>
+                            <h3 class="text-lg font-semibold mb-2">全流程覆盖</h3>
+                            <p class="text-gray-400 text-sm">从客户背调到签单跟进，覆盖销售全流程</p>
                         </div>
                         <div class="glass rounded-2xl p-6 card-hover">
                             <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mb-4 mx-auto">
                                 <i class="fa fa-brain text-secondary text-xl"></i>
                             </div>
-                            <h3 class="text-lg font-semibold mb-2">专业精准</h3>
-                            <p class="text-gray-400 text-sm">基于火山引擎官方知识库，内容专业可靠</p>
+                            <h3 class="text-lg font-semibold mb-2">专业级输出</h3>
+                            <p class="text-gray-400 text-sm">内置行业知识库，输出质量对标 Top Sales</p>
                         </div>
                         <div class="glass rounded-2xl p-6 card-hover">
                             <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4 mx-auto">
-                                <i class="fa fa-sliders text-accent text-xl"></i>
+                                <i class="fa fa-magic text-accent text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-2">开箱即用</h3>
+                            <p class="text-gray-400 text-sm">不用学 Prompt，点几下就出结果，零门槛</p>
+                        </div>
+                    </div>
                             </div>
                             <h3 class="text-lg font-semibold mb-2">灵活定制</h3>
                             <p class="text-gray-400 text-sm">支持多轮调整，按需定制专属方案</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 为什么选择销售易 -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                        为什么选择<span class="text-gradient">销售易</span>？
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        通用大模型很强大，但销售需要的是懂业务、能落地、开箱即用的专用工具
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 优势 1 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                            <i class="fa fa-bolt text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">开箱即用，零学习成本</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            不用研究怎么写 Prompt，不用反复调优。选行业、选场景，点一下就出结果。
+                            销售的时间很宝贵，应该花在客户身上，不是花在琢磨怎么问 AI。
+                        </p>
+                    </div>
+
+                    <!-- 优势 2 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center mb-6">
+                            <i class="fa fa-database text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">内置专业知识库</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            内置火山引擎完整产品库 + 行业解决方案库，推荐准确、内容专业。
+                            通用大模型可能瞎编产品，我们的输出都是基于真实产品和最佳实践。
+                        </p>
+                    </div>
+
+                    <!-- 优势 3 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
+                            <i class="fa fa-sitemap text-accent text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">销售全流程覆盖</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            客户背调 → 方案生成 → 话术准备 → 异议处理 → 竞品对比 → ROI 计算。
+                            一个工具搞定销售全流程，不用在 10 个对话框之间来回切。
+                        </p>
+                    </div>
+
+                    <!-- 优势 4 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center mb-6">
+                            <i class="fa fa-check-circle text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">输出标准化，质量可控</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            每个人用通用大模型写出来的方案千奇百怪。用销售易，
+                            新人也能写出 Top Sales 水平的方案，输出格式统一、专业度一致。
+                        </p>
+                    </div>
+
+                    <!-- 优势 5 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-orange-100 flex items-center justify-center mb-6">
+                            <i class="fa fa-calculator text-orange-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">专用计算工具</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            ROI 计算器、竞品对比表、拜访 checklist...
+                            这些销售专用的工具，通用大模型不会专门给你做，我们都做好了。
+                        </p>
+                    </div>
+
+                    <!-- 优势 6 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center mb-6">
+                            <i class="fa fa-building text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark mb-3">企业级数据沉淀</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            企业版可接入内部知识库、历史方案、成功案例。
+                            越用越聪明，把 Top Sales 的经验变成全公司的组织资产。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 一句话总结 -->
+                <div class="mt-16 text-center">
+                    <div class="inline-block bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-8 border border-primary/10">
+                        <p class="text-xl md:text-2xl font-bold text-dark mb-2">
+                            不是比大模型更聪明，而是把销售这件事做透了
+                        </p>
+                        <p class="text-gray-600">
+                            让每个销售都能像 Top Sales 一样专业、高效
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 客户背调区域 -->
+        <section id="research" class="section hidden py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-dark mb-4">🔍 客户背调</h2>
+                    <p class="text-gray-600">输入公司名称，AI 一键生成专业背调报告，拜访客户前必看</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- 左侧：输入配置 -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-white rounded-2xl shadow-sm p-6">
+                            <h3 class="text-lg font-bold text-dark mb-6 flex items-center">
+                                <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold mr-3">1</span>
+                                填写客户信息
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fa fa-building text-primary mr-1"></i> 公司名称 *
+                                    </label>
+                                    <input type="text" id="company-name" placeholder="例如：字节跳动、阿里巴巴"
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fa fa-industry text-primary mr-1"></i> 所属行业
+                                    </label>
+                                    <select id="research-industry" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                        <option value="">请选择行业（可选）</option>
+                                        <option value="零售电商">零售电商</option>
+                                        <option value="金融">金融</option>
+                                        <option value="制造">制造业</option>
+                                        <option value="汽车">汽车</option>
+                                        <option value="教育">教育</option>
+                                        <option value="医疗健康">医疗健康</option>
+                                        <option value="文旅传媒">文旅传媒</option>
+                                        <option value="政企">政企</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fa fa-user text-primary mr-1"></i> 拜访对象职位
+                                    </label>
+                                    <input type="text" id="research-position" placeholder="例如：CTO、技术总监、业务负责人"
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fa fa-crosshairs text-primary mr-1"></i> 重点关注方向
+                                    </label>
+                                    <textarea id="research-focus" rows="3" placeholder="例如：想了解他们的数字化转型规划、近期有没有上云计划..."
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                                </div>
+                            </div>
+                            
+                            <button onclick="generateResearch()" id="research-btn"
+                                class="w-full mt-6 py-4 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
+                                <i class="fa fa-search mr-2"></i> 生成背调报告
+                            </button>
+                        </div>
+                        
+                        <!-- 小贴士 -->
+                        <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-blue-900 mb-2 flex items-center">
+                                <i class="fa fa-lightbulb-o text-blue-500 mr-2"></i> 使用小贴士
+                            </h4>
+                            <ul class="text-sm text-blue-700 space-y-2">
+                                <li>• 公司名称越准确，背调越精准</li>
+                                <li>• 填写行业和职位，建议更有针对性</li>
+                                <li>• 生成时间约 30-60 秒，请耐心等待</li>
+                                <li>• 报告可直接复制用于拜访准备</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：背调结果 -->
+                    <div class="lg:col-span-2">
+                        <!-- 空状态 -->
+                        <div id="research-empty" class="bg-white rounded-2xl shadow-sm p-12 text-center">
+                            <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fa fa-search text-4xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-700 mb-2">还没有背调报告</h3>
+                            <p class="text-gray-500 mb-6">填写左侧的客户信息，一键生成专业背调报告</p>
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">公司画像</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">最新动态</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">竞品分析</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">需求挖掘</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">拜访策略</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 加载状态 -->
+                        <div id="research-loading" class="bg-white rounded-2xl shadow-sm p-12 text-center hidden">
+                            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i class="fa fa-spinner fa-spin text-3xl text-primary"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-700 mb-2">正在生成背调报告...</h3>
+                            <p id="research-loading-text" class="text-gray-500">正在收集公司信息...</p>
+                        </div>
+                        
+                        <!-- 背调结果 -->
+                        <div id="research-result" class="bg-white rounded-2xl shadow-sm overflow-hidden hidden">
+                            <!-- 结果头部 -->
+                            <div class="p-6 border-b border-gray-100 bg-gradient-to-r from-primary/5 to-accent/5">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 id="research-title" class="text-xl font-bold text-dark">客户背调报告</h3>
+                                        <p id="research-subtitle" class="text-sm text-gray-500 mt-1">AI 生成 · 仅供参考</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="copyResearch()" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                                            <i class="fa fa-copy mr-1"></i> 复制
+                                        </button>
+                                        <button onclick="downloadResearch()" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                                            <i class="fa fa-download mr-1"></i> 下载
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 报告内容 -->
+                            <div id="research-content" class="p-6 prose prose-sm max-w-none max-h-[600px] overflow-y-auto scrollbar-thin">
+                                <!-- 背调报告内容 -->
+                            </div>
                         </div>
                     </div>
                 </div>

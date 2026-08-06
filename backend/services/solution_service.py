@@ -303,6 +303,104 @@ class SolutionService:
         }):
             yield chunk
     
+    def generate_company_research(self, company_name: str, industry: str = "", 
+                                   position: str = "", focus: str = "") -> Dict:
+        """
+        生成客户背调报告
+        
+        Args:
+            company_name: 公司名称
+            industry: 行业
+            position: 拜访对象职位
+            focus: 重点关注方向
+        
+        Returns:
+            背调报告
+        """
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式生成背调报告")
+            return mock_service.generate_company_research(company_name, industry, position, focus)
+        
+        llm = self._get_llm()
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是一位资深的销售情报专家，拥有15年以上 B2B 销售经验，擅长做客户背调和拜访准备。
+
+请根据以下信息，为销售生成一份专业、实用、可落地的客户背调报告。
+
+【公司信息】
+- 公司名称：{company_name}
+- 所属行业：{industry}
+- 拜访对象职位：{position}
+- 重点关注方向：{focus}
+
+【报告结构要求】
+请严格按照以下结构生成，使用 Markdown 格式：
+
+# {company_name} 客户背调报告
+
+## 一、公司基本画像
+- 公司简介：主营业务、成立时间、规模、发展阶段
+- 企业文化：价值观、使命愿景、工作风格
+- 组织架构：关键部门、决策链条
+- 发展战略：近期战略方向、重点投入领域
+
+## 二、最新动态与关键信号
+- 近 3-6 个月重要新闻（融资、新品、合作、人事变动等）
+- 业务重点变化
+- 可能的痛点和机会点
+- 决策者关注的核心议题
+
+## 三、行业与竞争格局
+- 所在行业发展趋势与挑战
+- 主要竞争对手分析
+- 客户的竞争优势与劣势
+- 行业数字化转型现状
+
+## 四、潜在需求与合作切入点
+- 3-5 个可能的数字化/智能化需求点
+- 每个需求点的业务价值和紧迫度
+- 火山引擎哪些产品可能匹配
+- 推荐的优先级排序
+
+## 五、拜访策略建议
+- 最佳沟通切入点（从什么话题切入最容易拉近距离）
+- 可以聊的共同话题（行业热点、公司新闻等）
+- 需要注意的雷区和敏感话题
+- 不同决策角色的关注点差异
+
+## 六、下一步行动建议
+- 拜访前需要补充的信息
+- 推荐的方案准备方向
+- 拜访后的跟进策略
+
+【要求】
+1. 内容要具体、实用、可落地，不要空泛的套话
+2. 站在销售的视角，给出真正有用的洞察和建议
+3. 需求点要结合火山引擎的产品能力，给出具体的匹配建议
+4. 总字数控制在 1500-2000 字左右
+5. 使用 Markdown 格式，层级清晰，重点突出
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        print(f"🔍 正在生成客户背调: {company_name}")
+        result = chain.invoke({
+            "company_name": company_name,
+            "industry": industry if industry else "待确认",
+            "position": position if position else "待确认",
+            "focus": focus if focus else "全面了解"
+        })
+        
+        return {
+            "company_name": company_name,
+            "industry": industry,
+            "position": position,
+            "content": result
+        }
+    
     def _extract_products(self, content: str) -> List[str]:
         """从方案内容中提取提到的火山引擎产品"""
         # 产品关键词列表（按优先级排序）
