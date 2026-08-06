@@ -113,6 +113,9 @@
                     <button onclick="showSection('hero')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-home mr-1"></i> <span class="hidden sm:inline">首页</span>
                     </button>
+                    <button onclick="showSection('pipeline')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
+                        <i class="fa fa-filter mr-1"></i> <span class="hidden sm:inline">销售看板</span>
+                    </button>
                     <button onclick="showSection('customers')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
                         <i class="fa fa-address-book mr-1"></i> <span class="hidden sm:inline">客户管理</span>
                     </button>
@@ -295,6 +298,56 @@
             </div>
         </section>
 
+        <!-- 销售看板页面 -->
+        <section id="pipeline" class="section hidden py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-dark mb-2">📊 销售看板</h2>
+                    <p class="text-gray-600">一目了然掌握所有客户和销售机会</p>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="text-sm text-gray-500 mb-2">总客户数</div>
+                        <div id="stat-total-customers" class="text-3xl font-bold text-dark">0</div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="text-sm text-gray-500 mb-2">预计总金额</div>
+                        <div class="text-3xl font-bold text-primary">
+                            <span id="stat-total-amount">0</span><span class="text-lg font-normal text-gray-400">万</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="text-sm text-gray-500 mb-2">加权金额</div>
+                        <div class="text-3xl font-bold text-green-600">
+                            <span id="stat-weighted-amount">0</span><span class="text-lg font-normal text-gray-400">万</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="text-sm text-gray-500 mb-2">待跟进</div>
+                        <div id="stat-followup" class="text-3xl font-bold text-orange-500">0</div>
+                    </div>
+                </div>
+
+                <!-- 销售漏斗 -->
+                <div class="bg-white rounded-2xl shadow-sm p-8 mb-8">
+                    <h3 class="text-xl font-bold text-dark mb-6">销售漏斗</h3>
+                    <div id="pipeline-funnel" class="space-y-3">
+                        <!-- 漏斗会动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 各阶段客户列表 -->
+                <div class="bg-white rounded-2xl shadow-sm p-8">
+                    <h3 class="text-xl font-bold text-dark mb-6">客户阶段分布</h3>
+                    <div id="pipeline-stages" class="space-y-6">
+                        <!-- 各阶段客户会动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 客户管理页面 -->
         <section id="customers" class="section hidden py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -308,6 +361,29 @@
                         <button onclick="showAddCustomerModal()" class="px-6 py-3 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
                             <i class="fa fa-plus mr-2"></i> 新增客户
                         </button>
+                    </div>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="bg-white rounded-2xl shadow-sm p-4 mb-6 flex flex-wrap gap-4 items-center">
+                        <div class="flex-1 min-w-[200px]">
+                            <div class="relative">
+                                <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" id="customer-search" placeholder="搜索客户名称、行业、联系人..." 
+                                    oninput="renderCustomerList()"
+                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+                        </div>
+                        <select id="customer-stage-filter" onchange="renderCustomerList()" 
+                            class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            <option value="">全部阶段</option>
+                            <option value="lead">潜在客户</option>
+                            <option value="contact">初步接触</option>
+                            <option value="requirement">需求确认</option>
+                            <option value="proposal">方案沟通</option>
+                            <option value="negotiation">商务谈判</option>
+                            <option value="won">签约成交</option>
+                            <option value="lost">流失</option>
+                        </select>
                     </div>
 
                     <!-- 客户卡片网格 -->
@@ -408,7 +484,12 @@
 
                     <!-- 历史记录 -->
                     <div>
-                        <h3 class="text-xl font-bold text-dark mb-4">📝 历史记录</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-dark">📝 历史记录</h3>
+                            <button onclick="showAddFollowUpModal()" class="px-4 py-2 bg-gradient-primary rounded-lg text-sm text-white hover:opacity-90 transition-all">
+                                <i class="fa fa-plus mr-1"></i> 添加跟进
+                            </button>
+                        </div>
                         <div id="customer-records" class="space-y-4">
                             <!-- 历史记录会动态生成 -->
                         </div>
@@ -476,8 +557,44 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
-                        <textarea id="modal-notes" rows="3" placeholder="客户背景、需求、跟进状态等..."
+                        <textarea id="modal-notes" rows="2" placeholder="客户背景、需求、跟进状态等..."
                             class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">销售阶段</label>
+                            <select id="modal-stage" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <option value="lead">潜在客户</option>
+                                <option value="contact">初步接触</option>
+                                <option value="requirement">需求确认</option>
+                                <option value="proposal">方案沟通</option>
+                                <option value="negotiation">商务谈判</option>
+                                <option value="won">签约成交</option>
+                                <option value="lost">流失</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">成交概率 (%)</label>
+                            <input type="number" id="modal-probability" min="0" max="100" value="10"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">预计金额 (万)</label>
+                            <input type="number" id="modal-amount" min="0" step="0.1" placeholder="预计合同金额"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">下次跟进</label>
+                            <input type="date" id="modal-next-followup"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">标签（逗号分隔）</label>
+                        <input type="text" id="modal-tags" placeholder="例如：重点客户, 零售, 云服务"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                     </div>
                 </div>
                 <div class="p-6 border-t border-gray-100 flex justify-end gap-3">
@@ -485,6 +602,51 @@
                         取消
                     </button>
                     <button onclick="saveCustomer()" class="px-6 py-2 bg-gradient-primary rounded-lg text-white hover:opacity-90 transition-all">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增跟进记录弹窗 -->
+        <div id="followup-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="text-xl font-bold text-dark">添加跟进记录</h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">跟进方式</label>
+                        <select id="followup-type" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            <option value="电话">电话沟通</option>
+                            <option value="拜访">上门拜访</option>
+                            <option value="邮件">邮件往来</option>
+                            <option value="会议">线上会议</option>
+                            <option value="微信">微信沟通</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">跟进内容 *</label>
+                        <textarea id="followup-content" rows="4" placeholder="记录本次沟通的主要内容、客户反馈、关键信息等..."
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">下一步计划</label>
+                        <textarea id="followup-next-step" rows="2" placeholder="下一步要做什么？比如：发方案、约演示、报价等..."
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">下次跟进时间</label>
+                        <input type="date" id="followup-next-date"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-100 flex justify-end gap-3">
+                    <button onclick="hideFollowUpModal()" class="px-6 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                    <button onclick="saveFollowUp()" class="px-6 py-2 bg-gradient-primary rounded-lg text-white hover:opacity-90 transition-all">
                         保存
                     </button>
                 </div>

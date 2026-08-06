@@ -152,16 +152,50 @@ function renderCustomerList() {
     const grid = document.getElementById('customer-grid');
     const empty = document.getElementById('customer-empty');
     
-    if (customers.length === 0) {
+    // 获取搜索和筛选条件
+    const searchKeyword = document.getElementById('customer-search')?.value.trim().toLowerCase() || '';
+    const stageFilter = document.getElementById('customer-stage-filter')?.value || '';
+    
+    // 过滤客户
+    let filteredCustomers = customers.filter(customer => {
+        // 阶段筛选
+        if (stageFilter && customer.stage !== stageFilter) return false;
+        
+        // 关键词搜索
+        if (searchKeyword) {
+            const searchFields = [
+                customer.name,
+                customer.industry,
+                customer.contact,
+                customer.position,
+                customer.notes,
+                ...(customer.tags || [])
+            ].filter(Boolean).map(s => s.toLowerCase());
+            
+            if (!searchFields.some(field => field.includes(searchKeyword))) return false;
+        }
+        
+        return true;
+    });
+    
+    if (filteredCustomers.length === 0) {
         grid.innerHTML = '';
         empty.classList.remove('hidden');
+        if (searchKeyword || stageFilter) {
+            empty.querySelector('h3').textContent = '没有找到匹配的客户';
+            empty.querySelector('p').textContent = '试试换个关键词或筛选条件';
+        } else {
+            empty.querySelector('h3').textContent = '还没有客户';
+            empty.querySelector('p').textContent = '点击右上角"新增客户"，开始管理你的客户资源';
+        }
         return;
     }
     
     empty.classList.add('hidden');
-    grid.innerHTML = customers.map(customer => {
+    grid.innerHTML = filteredCustomers.map(customer => {
         const customerRecords = records.filter(r => r.customerId === customer.id);
         const avatar = customer.name.charAt(0);
+        const stage = stageConfig.find(s => s.key === customer.stage) || stageConfig[0];
         return `
             <div class="bg-white rounded-2xl shadow-sm p-6 card-hover cursor-pointer" onclick="showCustomerDetail('${customer.id}')">
                 <div class="flex items-start gap-4 mb-4">
@@ -175,7 +209,19 @@ function renderCustomerList() {
                 </div>
                 <div class="space-y-2 text-sm text-gray-600">
                     ${customer.contact ? `<div><i class="fa fa-user mr-2 text-gray-400"></i>${customer.contact}${customer.position ? ' · ' + customer.position : ''}</div>` : ''}
-                    ${customer.phone ? `<div><i class="fa fa-phone mr-2 text-gray-400"></i>${customer.phone}</div>` : ''}
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-1">
+                            <div class="w-2 h-2 rounded-full bg-${stage.color}-500"></div>
+                            <span class="text-xs">${stage.label}</span>
+                        </span>
+                        <span class="text-xs font-medium text-primary">${customer.amount ? customer.amount + '万' : ''}</span>
+                    </div>
+                    ${customer.tags && customer.tags.length > 0 ? `
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            ${customer.tags.slice(0, 3).map(tag => `<span class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">${tag}</span>`).join('')}
+                            ${customer.tags.length > 3 ? `<span class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">+${customer.tags.length - 3}</span>` : ''}
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                     <span class="text-xs text-gray-400">${customerRecords.length} 条记录</span>
@@ -197,6 +243,11 @@ function showAddCustomerModal() {
     document.getElementById('modal-phone').value = '';
     document.getElementById('modal-email').value = '';
     document.getElementById('modal-notes').value = '';
+    document.getElementById('modal-stage').value = 'lead';
+    document.getElementById('modal-probability').value = 10;
+    document.getElementById('modal-amount').value = '';
+    document.getElementById('modal-next-followup').value = '';
+    document.getElementById('modal-tags').value = '';
     document.getElementById('customer-modal').classList.remove('hidden');
 }
 
@@ -214,6 +265,11 @@ function showEditCustomerModal(customerId) {
     document.getElementById('modal-phone').value = customer.phone || '';
     document.getElementById('modal-email').value = customer.email || '';
     document.getElementById('modal-notes').value = customer.notes || '';
+    document.getElementById('modal-stage').value = customer.stage || 'lead';
+    document.getElementById('modal-probability').value = customer.probability || 10;
+    document.getElementById('modal-amount').value = customer.amount || '';
+    document.getElementById('modal-next-followup').value = customer.nextFollowUp || '';
+    document.getElementById('modal-tags').value = (customer.tags || []).join(', ');
     document.getElementById('customer-modal').classList.remove('hidden');
 }
 
@@ -239,6 +295,11 @@ function saveCustomer() {
         phone: document.getElementById('modal-phone').value.trim(),
         email: document.getElementById('modal-email').value.trim(),
         notes: document.getElementById('modal-notes').value.trim(),
+        stage: document.getElementById('modal-stage').value || 'lead',
+        tags: document.getElementById('modal-tags').value.trim().split(',').map(t => t.trim()).filter(t => t),
+        amount: parseFloat(document.getElementById('modal-amount').value) || 0,
+        probability: parseInt(document.getElementById('modal-probability').value) || 10,
+        nextFollowUp: document.getElementById('modal-next-followup').value || null,
     };
     
     if (editingCustomerId) {
@@ -311,12 +372,48 @@ function renderCustomerDetail() {
     const customer = customers.find(c => c.id === currentCustomerId);
     if (!customer) return;
     
+    const stage = stageConfig.find(s => s.key === customer.stage) || stageConfig[0];
+    
     document.getElementById('detail-avatar').textContent = customer.name.charAt(0);
     document.getElementById('detail-name').textContent = customer.name;
     document.getElementById('detail-industry').textContent = customer.industry || '未分类';
     document.getElementById('detail-contact').textContent = customer.contact || '暂无联系人';
     document.getElementById('detail-position').textContent = customer.position || '';
     document.getElementById('detail-notes').textContent = customer.notes || '';
+    
+    // 渲染客户信息头部的阶段和金额
+    const infoHeader = document.querySelector('#customer-detail-view .bg-white.rounded-2xl');
+    if (infoHeader && !document.getElementById('detail-stage-info')) {
+        const stageInfo = document.createElement('div');
+        stageInfo.id = 'detail-stage-info';
+        stageInfo.className = 'mt-6 pt-6 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-4';
+        infoHeader.querySelector('.flex.items-start.justify-between').parentElement.appendChild(stageInfo);
+    }
+    
+    const stageInfoEl = document.getElementById('detail-stage-info');
+    if (stageInfoEl) {
+        stageInfoEl.innerHTML = `
+            <div>
+                <div class="text-xs text-gray-500 mb-1">销售阶段</div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-${stage.color}-500"></div>
+                    <span class="font-medium text-dark">${stage.label}</span>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs text-gray-500 mb-1">预计金额</div>
+                <div class="font-medium text-dark">${customer.amount ? customer.amount + ' 万' : '暂无'}</div>
+            </div>
+            <div>
+                <div class="text-xs text-gray-500 mb-1">成交概率</div>
+                <div class="font-medium text-${stage.color}-600">${customer.probability || stage.probability}%</div>
+            </div>
+            <div>
+                <div class="text-xs text-gray-500 mb-1">下次跟进</div>
+                <div class="font-medium ${customer.nextFollowUp && customer.nextFollowUp <= new Date().toISOString().split('T')[0] ? 'text-red-500' : 'text-dark'}">${customer.nextFollowUp || '暂无'}</div>
+            </div>
+        `;
+    }
     
     // 渲染历史记录
     renderCustomerRecords();
@@ -345,7 +442,8 @@ function renderCustomerRecords() {
         script: { icon: 'fa-microphone', color: 'purple', label: '销售话术' },
         objection: { icon: 'fa-shield', color: 'orange', label: '异议处理' },
         checklist: { icon: 'fa-check-square-o', color: 'teal', label: '拜访清单' },
-        competitor: { icon: 'fa-balance-scale', color: 'indigo', label: '竞品对比' }
+        competitor: { icon: 'fa-balance-scale', color: 'indigo', label: '竞品对比' },
+        followup: { icon: 'fa-phone', color: 'pink', label: '跟进记录' }
     };
     
     container.innerHTML = customerRecords.map(record => {
@@ -412,6 +510,164 @@ function deleteRecord(recordId) {
     records = records.filter(r => r.id !== recordId);
     saveData();
     renderCustomerRecords();
+}
+
+// ========== 跟进记录 ==========
+
+// 添加跟进记录
+function addFollowUp(customerId, type, content, nextStep, nextFollowUp) {
+    if (!customerId) return;
+    
+    const record = {
+        id: generateId(),
+        customerId: customerId,
+        type: 'followup',
+        followUpType: type,
+        title: `${type}跟进`,
+        content: content,
+        nextStep: nextStep || '',
+        nextFollowUp: nextFollowUp || null,
+        createdAt: new Date().toISOString()
+    };
+    
+    records.unshift(record);
+    
+    // 更新客户的下次跟进时间
+    if (nextFollowUp) {
+        const customer = customers.find(c => c.id === customerId);
+        if (customer) {
+            customer.nextFollowUp = nextFollowUp;
+            customer.updatedAt = new Date().toISOString();
+        }
+    }
+    
+    saveData();
+    return record;
+}
+
+// 显示添加跟进弹窗
+function showAddFollowUpModal() {
+    document.getElementById('followup-type').value = '电话';
+    document.getElementById('followup-content').value = '';
+    document.getElementById('followup-next-step').value = '';
+    document.getElementById('followup-next-date').value = '';
+    document.getElementById('followup-modal').classList.remove('hidden');
+}
+
+// 隐藏跟进弹窗
+function hideFollowUpModal() {
+    document.getElementById('followup-modal').classList.add('hidden');
+}
+
+// 保存跟进记录
+function saveFollowUp() {
+    const type = document.getElementById('followup-type').value;
+    const content = document.getElementById('followup-content').value.trim();
+    const nextStep = document.getElementById('followup-next-step').value.trim();
+    const nextFollowUp = document.getElementById('followup-next-date').value;
+    
+    if (!content) {
+        alert('请填写跟进内容');
+        return;
+    }
+    
+    addFollowUp(currentCustomerId, type, content, nextStep, nextFollowUp);
+    hideFollowUpModal();
+    renderCustomerDetail();
+    renderCustomerRecords();
+}
+
+// ========== 销售看板 ==========
+
+const stageConfig = [
+    { key: 'lead', label: '潜在客户', color: 'gray', probability: 10, icon: 'fa-user-o' },
+    { key: 'contact', label: '初步接触', color: 'blue', probability: 20, icon: 'fa-phone' },
+    { key: 'requirement', label: '需求确认', color: 'cyan', probability: 40, icon: 'fa-comments' },
+    { key: 'proposal', label: '方案沟通', color: 'purple', probability: 60, icon: 'fa-file-text-o' },
+    { key: 'negotiation', label: '商务谈判', color: 'orange', probability: 80, icon: 'fa-handshake-o' },
+    { key: 'won', label: '签约成交', color: 'green', probability: 100, icon: 'fa-trophy' },
+    { key: 'lost', label: '流失', color: 'red', probability: 0, icon: 'fa-times' }
+];
+
+// 渲染销售看板
+function renderPipeline() {
+    const activeCustomers = customers.filter(c => c.stage !== 'lost');
+    const totalAmount = activeCustomers.reduce((sum, c) => sum + (c.amount || 0), 0);
+    const weightedAmount = activeCustomers.reduce((sum, c) => sum + (c.amount || 0) * (c.probability || 0) / 100, 0);
+    
+    // 计算待跟进数量（今天及之前的）
+    const today = new Date().toISOString().split('T')[0];
+    const followupCount = customers.filter(c => c.nextFollowUp && c.nextFollowUp <= today && c.stage !== 'lost').length;
+    
+    // 更新统计卡片
+    document.getElementById('stat-total-customers').textContent = activeCustomers.length;
+    document.getElementById('stat-total-amount').textContent = totalAmount.toFixed(1);
+    document.getElementById('stat-weighted-amount').textContent = weightedAmount.toFixed(1);
+    document.getElementById('stat-followup').textContent = followupCount;
+    
+    // 渲染漏斗
+    renderPipelineFunnel();
+    
+    // 渲染各阶段客户
+    renderPipelineStages();
+}
+
+// 渲染销售漏斗
+function renderPipelineFunnel() {
+    const container = document.getElementById('pipeline-funnel');
+    const maxCount = Math.max(...stageConfig.map(s => customers.filter(c => c.stage === s.key).length), 1);
+    
+    container.innerHTML = stageConfig.map(stage => {
+        const stageCustomers = customers.filter(c => c.stage === stage.key);
+        const count = stageCustomers.length;
+        const amount = stageCustomers.reduce((sum, c) => sum + (c.amount || 0), 0);
+        const widthPercent = Math.max((count / maxCount) * 100, 15);
+        
+        return `
+            <div class="flex items-center gap-4">
+                <div class="w-28 text-sm font-medium text-gray-600 flex-shrink-0">${stage.label}</div>
+                <div class="flex-1 h-12 bg-${stage.color}-100 rounded-lg relative overflow-hidden" style="width: ${widthPercent}%">
+                    <div class="absolute inset-0 flex items-center justify-between px-4">
+                        <span class="text-sm font-semibold text-${stage.color}-700">${count} 个</span>
+                        <span class="text-sm text-${stage.color}-600">${amount.toFixed(1)}万</span>
+                    </div>
+                </div>
+                <div class="w-16 text-sm text-gray-500 text-right flex-shrink-0">${stage.probability}%</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 渲染各阶段客户列表
+function renderPipelineStages() {
+    const container = document.getElementById('pipeline-stages');
+    
+    container.innerHTML = stageConfig.map(stage => {
+        const stageCustomers = customers.filter(c => c.stage === stage.key);
+        if (stageCustomers.length === 0) return '';
+        
+        return `
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-3 h-3 rounded-full bg-${stage.color}-500"></div>
+                    <h4 class="font-semibold text-dark">${stage.label}</h4>
+                    <span class="text-sm text-gray-500">(${stageCustomers.length}个)</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    ${stageCustomers.map(c => `
+                        <div class="border border-gray-100 rounded-xl p-4 hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer" onclick="showCustomerDetail('${c.id}')">
+                            <div class="font-medium text-dark mb-1">${c.name}</div>
+                            <div class="text-sm text-gray-500 mb-2">${c.industry || '未分类'} · ${c.contact || '暂无联系人'}</div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">${c.amount ? c.amount + '万' : '暂无金额'}</span>
+                                <span class="text-${stage.color}-600 font-medium">${stage.probability}%</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // ========== 快捷功能联动 ==========
@@ -488,6 +744,11 @@ function showSection(sectionId) {
     document.getElementById(sectionId).classList.remove('hidden');
     // 滚动到顶部
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // 如果是销售看板，重新渲染
+    if (sectionId === 'pipeline') {
+        renderPipeline();
+    }
 }
 
 // ========== 行业选择 ==========
