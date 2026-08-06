@@ -1040,7 +1040,6 @@ async function generateCompetitorCompare() {
 }
 
 // ========== 客户背调 ==========
-let currentResearch = null;
 
 async function generateResearch() {
     const companyName = document.getElementById('company-name').value.trim();
