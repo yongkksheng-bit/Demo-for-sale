@@ -3,6 +3,8 @@
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 
 from config import settings
@@ -60,12 +62,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 挂载静态文件（前端页面）
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 # ========== 基础接口 ==========
 
 @app.get("/")
 async def root():
-    """根路径"""
+    """根路径 - 返回前端页面"""
+    return FileResponse("static/index.html")
+
+
+@app.get("/api/info")
+async def api_info():
+    """API 信息"""
     return {
         "name": settings.APP_NAME,
         "version": settings.APP_VERSION,
