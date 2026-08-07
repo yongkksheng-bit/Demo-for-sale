@@ -112,31 +112,31 @@
             <!-- 导航菜单 -->
             <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
                 <button onclick="showSection('hero')" data-section="hero" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-home w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-home w-5 text-center text-gray-900"></i>
                     <span>首页</span>
                 </button>
                 <button onclick="showSection('research')" data-section="research" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-search w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-search w-5 text-center text-gray-900"></i>
                     <span>客户背调</span>
                 </button>
                 <button onclick="showSection('solution')" data-section="solution" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-lightbulb-o w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-lightbulb-o w-5 text-center text-gray-900"></i>
                     <span>方案生成</span>
                 </button>
                 <button onclick="showSection('pipeline')" data-section="pipeline" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-bar-chart w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-bar-chart w-5 text-center text-gray-900"></i>
                     <span>销售看板</span>
                 </button>
                 <button onclick="showSection('customers')" data-section="customers" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-address-book w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-address-book w-5 text-center text-gray-900"></i>
                     <span>客户管理</span>
                 </button>
                 <button onclick="showSection('tools')" data-section="tools" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-wrench w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-wrench w-5 text-center text-gray-900"></i>
                     <span>销售工具箱</span>
                 </button>
                 <button onclick="showSection('chat')" data-section="chat" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-200 transition-colors text-left text-sm text-gray-900">
-                    <i class="fa fa-comments w-5 text-center text-gray-700"></i>
+                    <i class="fa fa-comments w-5 text-center text-gray-900"></i>
                     <span>智能对话</span>
                 </button>
             </nav>
@@ -159,37 +159,38 @@
                     </div>
                 </div>
                 
-                <!-- 中间：大对话输入框 -->
+                <!-- 中间：大对话输入框 + 快捷按钮 -->
                 <div class="flex-1 flex items-center justify-center px-6">
                     <div class="w-full max-w-3xl">
-                        <div class="relative">
+                        <div class="relative mb-6">
                             <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
-                                class="w-full px-6 py-5 pr-14 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-lg"
+                                class="w-full px-6 py-6 pr-14 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-lg"
                                 onkeypress="if(event.key==='Enter') heroChat()">
                             <button onclick="heroChat()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center hover:bg-gray-800 transition-all">
                                 <i class="fa fa-paper-plane text-white"></i>
                             </button>
                         </div>
+                        
+                        <!-- 快捷功能（紧跟输入框下面） -->
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <button onclick="showSection('research')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                                <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
+                            </button>
+                            <button onclick="showSection('solution')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                                <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
+                            </button>
+                            <button onclick="showSection('pipeline')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                                <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
+                            </button>
+                            <button onclick="showSection('customers')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                                <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 底部：快捷功能 -->
-                <div class="pb-20 px-6">
-                    <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-                        <button onclick="showSection('research')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                            <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
-                        </button>
-                        <button onclick="showSection('solution')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                            <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
-                        </button>
-                        <button onclick="showSection('pipeline')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                            <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
-                        </button>
-                        <button onclick="showSection('customers')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                            <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
-                        </button>
-                    </div>
-                </div>
+                <!-- 底部留白 -->
+                <div class="pb-20"></div>
             </div>
 
             <!-- 产品介绍区（下滑可见） -->
@@ -1211,7 +1212,7 @@
                     </div>
 
                     <!-- ROI 计算器 -->
-                    <div class="md:col-span-2 bg-gradient-to-r from-primary to-secondary rounded-2xl shadow-lg p-8 text-white">
+                    <div class="md:col-span-2 bg-gradient-to-r from-gray-900 to-gray-900 rounded-2xl shadow-lg p-8 text-white">
                         <div class="flex items-center mb-6">
                             <div class="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center mr-4">
                                 <i class="fa fa-calculator text-2xl"></i>
