@@ -103,7 +103,7 @@
             <div class="p-5 border-b border-gray-800">
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center">
-                        <span class="text-gray-900 font-bold text-base">销</span>
+                        <span class="text-gray-900 font-bold text-lg italic">S</span>
                     </div>
                     <span class="font-bold text-lg">销售易</span>
                 </div>
@@ -115,7 +115,6 @@
                     <i class="fa fa-home w-5 text-center text-gray-400"></i>
                     <span>首页</span>
                 </button>
-                <div class="pt-4 pb-2 px-3 text-xs text-gray-500 font-medium">核心功能</div>
                 <button onclick="showSection('research')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
                     <i class="fa fa-search w-5 text-center text-gray-400"></i>
                     <span>客户背调</span>
@@ -132,7 +131,6 @@
                     <i class="fa fa-address-book w-5 text-center text-gray-400"></i>
                     <span>客户管理</span>
                 </button>
-                <div class="pt-4 pb-2 px-3 text-xs text-gray-500 font-medium">辅助工具</div>
                 <button onclick="showSection('tools')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
                     <i class="fa fa-wrench w-5 text-center text-gray-400"></i>
                     <span>销售工具箱</span>
@@ -148,16 +146,23 @@
         <main class="flex-1 overflow-y-auto bg-white">
             <!-- Hero 区域（首屏） -->
         <section id="hero" class="section min-h-screen flex items-center justify-center bg-white">
-            <div class="max-w-3xl mx-auto px-6 w-full">
+            <div class="max-w-2xl mx-auto px-6 w-full">
                 <div class="text-center">
-                    <!-- Slogan（最上面） -->
-                    <p class="text-gray-500 text-base mb-4">让每个销售都成为 Top Sales</p>
+                    <!-- Logo -->
+                    <div class="mb-6">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gray-900 rounded-2xl flex items-center justify-center">
+                            <span class="text-white text-3xl font-bold italic">S</span>
+                        </div>
+                    </div>
                     
                     <!-- 品牌名 -->
-                    <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-12">销售易</h1>
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">销售易</h1>
+                    
+                    <!-- 副标题 -->
+                    <p class="text-gray-500 text-base mb-10">让每个销售都成为 Top Sales</p>
                     
                     <!-- 大对话输入框 -->
-                    <div class="max-w-xl mx-auto mb-12">
+                    <div class="mb-8">
                         <div class="relative">
                             <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
                                 class="w-full px-5 py-4 pr-12 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-base"
@@ -168,74 +173,20 @@
                         </div>
                     </div>
                     
-                    <!-- 功能入口 -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-xl mx-auto">
-                        <div onclick="showSection('research')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-search text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">客户背调</div>
-                                    <div class="text-xs text-gray-500">生成客户调研报告</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div onclick="showSection('solution')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-lightbulb-o text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">方案生成</div>
-                                    <div class="text-xs text-gray-500">AI 生成方案建议书</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div onclick="showSection('pipeline')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-bar-chart text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">销售看板</div>
-                                    <div class="text-xs text-gray-500">销售漏斗与商机</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div onclick="showSection('customers')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-address-book text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">客户管理</div>
-                                    <div class="text-xs text-gray-500">客户档案与跟进</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div onclick="showSection('tools')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-wrench text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">销售工具箱</div>
-                                    <div class="text-xs text-gray-500">话术、异议、竞品</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div onclick="showSection('chat')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-comments text-gray-600 text-sm"></i>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm text-gray-900">智能对话</div>
-                                    <div class="text-xs text-gray-500">AI 助手自由对话</div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- 快捷功能（横向排列） -->
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button onclick="showSection('research')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
+                        </button>
+                        <button onclick="showSection('solution')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
+                        </button>
+                        <button onclick="showSection('pipeline')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
+                        </button>
+                        <button onclick="showSection('customers')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
+                        </button>
                     </div>
                 </div>
             </div>
