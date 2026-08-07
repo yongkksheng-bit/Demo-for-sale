@@ -146,48 +146,48 @@
         <main class="flex-1 overflow-y-auto bg-white">
             <!-- Hero 区域（首屏） -->
         <section id="hero" class="section bg-white">
-            <!-- 首屏内容（占满一屏，居中） -->
-            <div class="min-h-screen flex items-center justify-center">
-                <div class="max-w-2xl mx-auto px-6 w-full">
-                    <div class="text-center">
-                        <!-- Slogan（最顶部，大字体） -->
-                        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">让每个销售都成为 Top Sales</h1>
-                        
-                        <!-- 品牌名 -->
-                        <div class="mb-10">
-                            <div class="w-14 h-14 mx-auto mb-3 bg-gray-900 rounded-xl flex items-center justify-center">
-                                <span class="text-white text-2xl font-bold italic">S</span>
-                            </div>
-                            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">销售易</h2>
+            <!-- 首屏内容（上中下布局） -->
+            <div class="min-h-screen flex flex-col">
+                <!-- 顶部：Slogan + 品牌 -->
+                <div class="pt-28 md:pt-36 text-center px-6">
+                    <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8">让每个销售都成为 Top Sales</h1>
+                    <div class="flex items-center justify-center gap-3">
+                        <div class="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl font-bold italic">S</span>
                         </div>
-                        
-                        <!-- 大对话输入框 -->
-                        <div class="mb-8">
-                            <div class="relative">
-                                <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
-                                    class="w-full px-5 py-4 pr-12 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-base"
-                                    onkeypress="if(event.key==='Enter') heroChat()">
-                                <button onclick="heroChat()" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-all">
-                                    <i class="fa fa-paper-plane text-white text-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- 快捷功能（横向排列） -->
-                        <div class="flex flex-wrap justify-center gap-2">
-                            <button onclick="showSection('research')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
-                            </button>
-                            <button onclick="showSection('solution')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
-                            </button>
-                            <button onclick="showSection('pipeline')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
-                            </button>
-                            <button onclick="showSection('customers')" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
+                        <span class="text-xl md:text-2xl font-bold text-gray-900">销售易</span>
+                    </div>
+                </div>
+                
+                <!-- 中间：大对话输入框 -->
+                <div class="flex-1 flex items-center justify-center px-6">
+                    <div class="w-full max-w-3xl">
+                        <div class="relative">
+                            <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
+                                class="w-full px-6 py-5 pr-14 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-lg"
+                                onkeypress="if(event.key==='Enter') heroChat()">
+                            <button onclick="heroChat()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center hover:bg-gray-800 transition-all">
+                                <i class="fa fa-paper-plane text-white"></i>
                             </button>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- 底部：快捷功能 -->
+                <div class="pb-20 px-6">
+                    <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+                        <button onclick="showSection('research')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
+                        </button>
+                        <button onclick="showSection('solution')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
+                        </button>
+                        <button onclick="showSection('pipeline')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
+                        </button>
+                        <button onclick="showSection('customers')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
+                            <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
+                        </button>
                     </div>
                 </div>
             </div>
