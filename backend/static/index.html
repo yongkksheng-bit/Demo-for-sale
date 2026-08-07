@@ -189,8 +189,14 @@
                     </div>
                 </div>
                 
-                <!-- 底部留白 -->
-                <div class="pb-20"></div>
+                <!-- 底部：滑动提示 -->
+                <div class="pb-12 text-center">
+                    <div class="inline-flex flex-col items-center cursor-pointer hover:opacity-70 transition-opacity" onclick="scrollToIntro()">
+                        <span class="text-sm text-gray-500 mb-2">了解这款应用</span>
+                        <i class="fa fa-chevron-down text-gray-400 animate-bounce"></i>
+                        <span class="text-xs text-gray-400 mt-1">滑动探索</span>
+                    </div>
+                </div>
             </div>
 
             <!-- 产品介绍区（下滑可见） -->
@@ -202,104 +208,170 @@
                         每个销售都该有的 AI 助手
                     </h2>
                     <p class="text-gray-500 max-w-xl mx-auto">
-                        不管你卖什么，销售易都能帮你搞定客户背调、方案生成、话术准备、异议处理
+                        从拜访准备到签约成交，AI 帮你搞定每一步
                     </p>
                 </div>
 
-                <!-- 全行业适用 -->
+                <!-- 三步上手 -->
                 <div class="mb-20">
                     <div class="text-center mb-10">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">全行业适用</h3>
-                        <p class="text-gray-500 text-sm">不只是云销售、不只是 AI 销售，所有行业的销售都能用</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">三步上手，零学习成本</h3>
+                        <p class="text-gray-500 text-sm">不用学怎么写 Prompt，不用看说明书，拿到就能用</p>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">🚚</div>
-                            <div class="text-sm font-medium text-gray-900">物流销售</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <div class="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center mb-4">
+                                <span class="text-white text-xl font-bold">1</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-2">输入客户信息</h4>
+                            <p class="text-gray-500 text-sm">填写公司名称、行业、拜访对象。不知道也没关系，公司名就够了。</p>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">📢</div>
-                            <div class="text-sm font-medium text-gray-900">广告销售</div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <div class="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center mb-4">
+                                <span class="text-white text-xl font-bold">2</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-2">AI 一键生成</h4>
+                            <p class="text-gray-500 text-sm">点击生成按钮，AI 自动分析，30 秒出结果，不用等。</p>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">💻</div>
-                            <div class="text-sm font-medium text-gray-900">软件销售</div>
-                        </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">⚙️</div>
-                            <div class="text-sm font-medium text-gray-900">设备销售</div>
-                        </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">🏢</div>
-                            <div class="text-sm font-medium text-gray-900">企业服务</div>
-                        </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                            <div class="text-2xl mb-2">💰</div>
-                            <div class="text-sm font-medium text-gray-900">金融销售</div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <div class="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center mb-4">
+                                <span class="text-white text-xl font-bold">3</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-2">直接拿去用</h4>
+                            <p class="text-gray-500 text-sm">一键复制，拜访前 5 分钟就能准备好，直接用。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 覆盖销售全流程 -->
+                <!-- 核心功能展示 -->
                 <div class="mb-20">
                     <div class="text-center mb-10">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">覆盖销售全流程</h3>
-                        <p class="text-gray-500 text-sm">从第一次接触到签约成交，一个工具搞定所有事</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">核心功能一览</h3>
+                        <p class="text-gray-500 text-sm">从拜访准备到签约成交，每个环节都有 AI 帮你</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-search text-blue-500"></i>
+                    
+                    <!-- 客户背调 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-3">客户背调</h4>
+                            <p class="text-gray-500 text-sm mb-4">
+                                拜访客户前必做功课。输入公司名，AI 自动生成完整背调报告：公司情况、最新动态、行业格局、潜在需求、拜访策略。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    公司基本画像与业务情况
                                 </div>
-                                <h4 class="font-bold text-gray-900">客户背调</h4>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    最新动态与关键信号
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    潜在需求与合作切入点
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    拜访策略与话术建议
+                                </div>
                             </div>
-                            <p class="text-gray-500 text-sm">拜访前一键生成客户调研报告，知己知彼，百战不殆</p>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-lightbulb-o text-amber-500"></i>
-                                </div>
-                                <h4 class="font-bold text-gray-900">方案生成</h4>
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="w-3 h-3 bg-gray-200 rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-gray-200 rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
                             </div>
-                            <p class="text-gray-500 text-sm">快速输出专业的方案建议书，新人也能写出 Top Sales 水平</p>
+                            <div class="space-y-3">
+                                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                                <div class="h-3 bg-gray-100 rounded w-full"></div>
+                                <div class="h-3 bg-gray-100 rounded w-5/6"></div>
+                                <div class="h-4 bg-gray-200 rounded w-2/3 mt-4"></div>
+                                <div class="h-3 bg-gray-100 rounded w-full"></div>
+                                <div class="h-3 bg-gray-100 rounded w-4/5"></div>
+                            </div>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-microphone text-green-500"></i>
-                                </div>
-                                <h4 class="font-bold text-gray-900">话术准备</h4>
+                    </div>
+
+                    <!-- 方案生成 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+                        <div class="order-2 md:order-1 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="w-3 h-3 bg-gray-200 rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-gray-200 rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
                             </div>
-                            <p class="text-gray-500 text-sm">针对不同场景生成销售话术，再也不怕不知道怎么开口</p>
+                            <div class="space-y-3">
+                                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                                <div class="h-3 bg-gray-100 rounded w-full"></div>
+                                <div class="h-3 bg-gray-100 rounded w-5/6"></div>
+                                <div class="h-3 bg-gray-100 rounded w-4/5"></div>
+                                <div class="h-4 bg-gray-200 rounded w-2/3 mt-4"></div>
+                                <div class="h-3 bg-gray-100 rounded w-full"></div>
+                            </div>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-shield text-purple-500"></i>
+                        <div class="order-1 md:order-2">
+                            <h4 class="text-xl font-bold text-gray-900 mb-3">方案生成</h4>
+                            <p class="text-gray-500 text-sm mb-4">
+                                选行业、选场景，一键生成专业方案建议书。新人也能写出 Top Sales 水平的方案，质量稳定、格式统一。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    8 大行业、40+ 典型场景
                                 </div>
-                                <h4 class="font-bold text-gray-900">异议处理</h4>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    完整方案建议书结构
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    支持流式生成，边看边等
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fa fa-check text-gray-400 mr-2"></i>
+                                    一键复制、一键下载
+                                </div>
                             </div>
-                            <p class="text-gray-500 text-sm">客户提出异议时，给你专业的应对思路，把问题变成机会</p>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-cyan-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-balance-scale text-cyan-500"></i>
+                    </div>
+
+                    <!-- 销售看板 + 客户管理 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <h4 class="font-bold text-gray-900 mb-3">销售看板</h4>
+                            <p class="text-gray-500 text-sm mb-4">
+                                一目了然的销售漏斗，所有商机尽在掌握。加权金额、待跟进、各阶段客户数，实时更新。
+                            </p>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <div class="w-16 h-3 bg-gray-200 rounded mr-2"></div>
+                                        <div class="h-3 bg-gray-300 rounded flex-1"></div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-16 h-3 bg-gray-200 rounded mr-2"></div>
+                                        <div class="h-3 bg-gray-300 rounded w-5/6"></div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-16 h-3 bg-gray-200 rounded mr-2"></div>
+                                        <div class="h-3 bg-gray-300 rounded w-2/3"></div>
+                                    </div>
                                 </div>
-                                <h4 class="font-bold text-gray-900">竞品对比</h4>
                             </div>
-                            <p class="text-gray-500 text-sm">帮你分析和竞争对手的差异，突出你的差异化优势</p>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                            <div class="flex items-center space-x-3 mb-3">
-                                <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                                    <i class="fa fa-calculator text-orange-500"></i>
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <h4 class="font-bold text-gray-900 mb-3">客户管理</h4>
+                            <p class="text-gray-500 text-sm mb-4">
+                                所有客户信息集中管理，跟进记录自动沉淀。从客户详情一键生成背调、方案、话术，工作流闭环。
+                            </p>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="space-y-3">
+                                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                                    <div class="h-3 bg-gray-100 rounded w-full"></div>
+                                    <div class="h-3 bg-gray-100 rounded w-5/6"></div>
                                 </div>
-                                <h4 class="font-bold text-gray-900">ROI 计算</h4>
                             </div>
-                            <p class="text-gray-500 text-sm">一键算出投资回报，用数据说话，帮你快速逼单</p>
                         </div>
                     </div>
                 </div>
@@ -307,7 +379,7 @@
                 <!-- 为什么选择销售易 -->
                 <div class="mb-16">
                     <div class="text-center mb-10">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">为什么用销售易，而不是通用大模型？</h3>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">为什么选择销售易，而不是通用大模型</h3>
                         <p class="text-gray-500 text-sm">通用大模型给你能力，销售易给你方法论 + 能力</p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -369,7 +441,7 @@
         <section id="pipeline" class="section hidden py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-dark mb-2">📊 销售看板</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">销售看板</h2>
                     <p class="text-gray-600">一目了然掌握所有客户和销售机会</p>
                 </div>
 
@@ -422,7 +494,7 @@
                 <div id="customer-list-view">
                     <div class="flex items-center justify-between mb-8">
                         <div>
-                            <h2 class="text-3xl font-bold text-dark mb-2">📇 客户管理</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">客户管理</h2>
                             <p class="text-gray-600">管理你的客户，所有资料和历史记录一目了然</p>
                         </div>
                         <button onclick="showAddCustomerModal()" class="px-6 py-3 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
@@ -724,7 +796,7 @@
         <section id="research" class="section hidden py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-dark mb-4">🔍 客户背调</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">客户背调</h2>
                     <p class="text-gray-600">输入公司名称，AI 一键生成专业背调报告，拜访客户前必看</p>
                 </div>
 
@@ -862,7 +934,7 @@
         <section id="solution" class="section hidden py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-dark mb-4">智能方案生成</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">智能方案生成</h2>
                     <p class="text-gray-600">选择行业和场景，一键生成专业方案建议书</p>
                 </div>
 
@@ -1003,7 +1075,7 @@
         <section id="chat" class="section hidden py-16">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-dark mb-4">智能对话顾问</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">智能对话顾问</h2>
                     <p class="text-gray-600">有任何关于火山引擎产品、方案、技术的问题，随时问我</p>
                 </div>
 
@@ -1049,7 +1121,7 @@
         <section id="tools" class="section hidden py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-dark mb-4">销售工具箱</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">销售工具箱</h2>
                     <p class="text-gray-600">助力销售全流程，提升成单效率</p>
                 </div>
 
@@ -1264,7 +1336,7 @@
                                 
                                 <div class="flex justify-between items-center">
                                     <span class="text-white/80">投资回报率（ROI）</span>
-                                    <span id="roi-ratio" class="text-3xl font-bold text-yellow-300">1250%</span>
+                                    <span id="roi-ratio" class="text-3xl font-bold text-white">1250%</span>
                                 </div>
                                 
                                 <div class="h-px bg-white/20"></div>
