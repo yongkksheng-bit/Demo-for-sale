@@ -1111,6 +1111,12 @@ function downloadSolution() {
 }
 
 // ========== 智能对话 ==========
+function quickChat(text) {
+    const input = document.getElementById('chat-input');
+    input.value = text;
+    sendMessage();
+}
+
 async function sendMessage() {
     const input = document.getElementById('chat-input');
     const message = input.value.trim();
@@ -1243,6 +1249,10 @@ async function generateSalesScript() {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa fa-magic mr-1"></i> 生成话术';
     }
+}
+
+function setObjection(text) {
+    document.getElementById('objection-input').value = text;
 }
 
 async function handleObjection() {
