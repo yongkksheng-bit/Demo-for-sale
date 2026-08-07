@@ -745,6 +745,19 @@ function showSection(sectionId) {
     // 滚动到顶部
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
+    // 更新侧边栏选中状态
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('bg-gray-200', 'font-semibold');
+        const icon = item.querySelector('i');
+        if (icon) icon.classList.remove('text-gray-900');
+    });
+    const activeNav = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+    if (activeNav) {
+        activeNav.classList.add('bg-gray-200', 'font-semibold');
+        const icon = activeNav.querySelector('i');
+        if (icon) icon.classList.add('text-gray-900');
+    }
+    
     // 如果是销售看板，重新渲染
     if (sectionId === 'pipeline') {
         renderPipeline();
