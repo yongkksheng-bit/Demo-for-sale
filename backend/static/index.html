@@ -95,124 +95,147 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass bg-white/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+<body class="bg-white min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 左侧边栏 -->
+        <aside class="w-64 bg-gray-900 text-white flex flex-col flex-shrink-0">
+            <!-- Logo 区域 -->
+            <div class="p-5 border-b border-gray-800">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-                        <i class="fa fa-bolt text-white text-xl"></i>
+                    <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-gray-900 font-bold text-base">销</span>
                     </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-dark">销售易</h1>
-                        <p class="text-xs text-gray-500">AI 销售助手</p>
-                    </div>
+                    <span class="font-bold text-lg">销售易</span>
                 </div>
-                <div class="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
-                    <button onclick="showSection('hero')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-home mr-1"></i> <span class="hidden sm:inline">首页</span>
-                    </button>
-                    <button onclick="showSection('pipeline')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-filter mr-1"></i> <span class="hidden sm:inline">销售看板</span>
-                    </button>
-                    <button onclick="showSection('customers')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-address-book mr-1"></i> <span class="hidden sm:inline">客户管理</span>
-                    </button>
-                    <button onclick="showSection('research')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-search mr-1"></i> <span class="hidden sm:inline">客户背调</span>
-                    </button>
-                    <button onclick="showSection('solution')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-lightbulb-o mr-1"></i> <span class="hidden sm:inline">方案生成</span>
-                    </button>
-                    <button onclick="showSection('tools')" class="text-gray-600 hover:text-primary transition-colors px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 text-xs sm:text-sm">
-                        <i class="fa fa-wrench mr-1"></i> <span class="hidden sm:inline">工具箱</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 主内容区 -->
-    <main class="pt-16">
-        <!-- Hero 区域（首屏） -->
-        <section id="hero" class="section bg-gradient-hero text-white min-h-screen flex items-center justify-center relative overflow-hidden">
-            <!-- 背景装饰 -->
-            <div class="absolute inset-0 overflow-hidden">
-                <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-float"></div>
-                <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl"></div>
             </div>
             
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <!-- 导航菜单 -->
+            <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+                <button onclick="showSection('hero')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-home w-5 text-center text-gray-400"></i>
+                    <span>首页</span>
+                </button>
+                <div class="pt-4 pb-2 px-3 text-xs text-gray-500 font-medium">核心功能</div>
+                <button onclick="showSection('research')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-search w-5 text-center text-gray-400"></i>
+                    <span>客户背调</span>
+                </button>
+                <button onclick="showSection('solution')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-lightbulb-o w-5 text-center text-gray-400"></i>
+                    <span>方案生成</span>
+                </button>
+                <button onclick="showSection('pipeline')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-bar-chart w-5 text-center text-gray-400"></i>
+                    <span>销售看板</span>
+                </button>
+                <button onclick="showSection('customers')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-address-book w-5 text-center text-gray-400"></i>
+                    <span>客户管理</span>
+                </button>
+                <div class="pt-4 pb-2 px-3 text-xs text-gray-500 font-medium">辅助工具</div>
+                <button onclick="showSection('tools')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-wrench w-5 text-center text-gray-400"></i>
+                    <span>销售工具箱</span>
+                </button>
+                <button onclick="showSection('chat')" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors text-left text-sm">
+                    <i class="fa fa-comments w-5 text-center text-gray-400"></i>
+                    <span>智能对话</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- 右侧主内容区 -->
+        <main class="flex-1 overflow-y-auto bg-white">
+            <!-- Hero 区域（首屏） -->
+        <section id="hero" class="section min-h-screen flex items-center justify-center bg-white">
+            <div class="max-w-3xl mx-auto px-6 w-full">
                 <div class="text-center">
-                    <!-- Logo + 品牌名 -->
-                    <div class="mb-8">
-                        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
-                            <i class="fa fa-handshake-o text-3xl text-white"></i>
-                        </div>
-                        <div class="text-xl font-medium text-white/80">销售易</div>
-                    </div>
+                    <!-- Slogan（最上面） -->
+                    <p class="text-gray-500 text-base mb-4">让每个销售都成为 Top Sales</p>
                     
-                    <!-- Slogan（主视觉） -->
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        让每个销售都成为
-                        <span class="text-gradient">Top Sales</span>
-                    </h1>
-                    
-                    <p class="text-base sm:text-lg text-gray-300 mb-10 max-w-xl mx-auto">
-                        AI 销售助手，帮你搞定客户背调、方案生成、话术准备、异议处理
-                    </p>
+                    <!-- 品牌名 -->
+                    <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-12">销售易</h1>
                     
                     <!-- 大对话输入框 -->
-                    <div class="max-w-2xl mx-auto mb-12">
+                    <div class="max-w-xl mx-auto mb-12">
                         <div class="relative">
                             <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
-                                class="w-full px-6 py-5 pr-16 bg-white/10 backdrop-blur border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-lg"
+                                class="w-full px-5 py-4 pr-12 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-base"
                                 onkeypress="if(event.key==='Enter') heroChat()">
-                            <button onclick="heroChat()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-all">
-                                <i class="fa fa-paper-plane text-white"></i>
+                            <button onclick="heroChat()" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-all">
+                                <i class="fa fa-paper-plane text-white text-sm"></i>
                             </button>
                         </div>
                     </div>
                     
-                    <!-- 快捷功能入口 -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto mb-12">
-                        <div onclick="showSection('research')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">🔍</div>
-                            <div class="font-medium text-sm">客户背调</div>
-                            <div class="text-xs text-gray-400 mt-1">一键生成客户调研报告</div>
+                    <!-- 功能入口 -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-xl mx-auto">
+                        <div onclick="showSection('research')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-search text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">客户背调</div>
+                                    <div class="text-xs text-gray-500">生成客户调研报告</div>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="showSection('solution')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">💡</div>
-                            <div class="font-medium text-sm">方案生成</div>
-                            <div class="text-xs text-gray-400 mt-1">AI 生成专业方案建议书</div>
+                        <div onclick="showSection('solution')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-lightbulb-o text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">方案生成</div>
+                                    <div class="text-xs text-gray-500">AI 生成方案建议书</div>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="showSection('pipeline')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">📊</div>
-                            <div class="font-medium text-sm">销售看板</div>
-                            <div class="text-xs text-gray-400 mt-1">销售漏斗与商机管理</div>
+                        <div onclick="showSection('pipeline')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-bar-chart text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">销售看板</div>
+                                    <div class="text-xs text-gray-500">销售漏斗与商机</div>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="showSection('customers')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">📇</div>
-                            <div class="font-medium text-sm">客户管理</div>
-                            <div class="text-xs text-gray-400 mt-1">客户档案与跟进记录</div>
+                        <div onclick="showSection('customers')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-address-book text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">客户管理</div>
+                                    <div class="text-xs text-gray-500">客户档案与跟进</div>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="showSection('tools')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">🛠️</div>
-                            <div class="font-medium text-sm">销售工具箱</div>
-                            <div class="text-xs text-gray-400 mt-1">话术、异议、竞品、ROI</div>
+                        <div onclick="showSection('tools')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-wrench text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">销售工具箱</div>
+                                    <div class="text-xs text-gray-500">话术、异议、竞品</div>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="scrollToIntro()" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-                            <div class="text-2xl mb-2">ℹ️</div>
-                            <div class="font-medium text-sm">了解销售易</div>
-                            <div class="text-xs text-gray-400 mt-1">产品介绍与核心优势</div>
+                        <div onclick="showSection('chat')" class="p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer text-left">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-comments text-gray-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm text-gray-900">智能对话</div>
+                                    <div class="text-xs text-gray-500">AI 助手自由对话</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- 下滑提示 -->
-                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                        <i class="fa fa-chevron-down text-white/50 text-xl"></i>
                     </div>
                 </div>
             </div>
@@ -1265,6 +1288,8 @@
             </div>
         </div>
     </footer>
+        </main>
+    </div>
 
     <script src="./app.js"></script>
 </body>
