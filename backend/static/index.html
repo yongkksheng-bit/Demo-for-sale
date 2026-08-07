@@ -135,8 +135,8 @@
 
     <!-- 主内容区 -->
     <main class="pt-16">
-        <!-- Hero 区域 -->
-        <section id="hero" class="section bg-gradient-hero text-white py-16 relative overflow-hidden">
+        <!-- Hero 区域（首屏） -->
+        <section id="hero" class="section bg-gradient-hero text-white min-h-screen flex items-center justify-center relative overflow-hidden">
             <!-- 背景装饰 -->
             <div class="absolute inset-0 overflow-hidden">
                 <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-float"></div>
@@ -144,70 +144,91 @@
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl"></div>
             </div>
             
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="text-center max-w-4xl mx-auto">
-                    <div class="inline-flex items-center px-4 py-2 rounded-full glass mb-8">
-                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                        <span class="text-sm text-gray-300">AI 驱动的销售全流程助手</span>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                <div class="text-center">
+                    <!-- Logo + 品牌名 -->
+                    <div class="mb-8">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
+                            <i class="fa fa-handshake-o text-3xl text-white"></i>
+                        </div>
+                        <div class="text-xl font-medium text-white/80">销售易</div>
                     </div>
                     
+                    <!-- Slogan（主视觉） -->
                     <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                         让每个销售都成为
                         <span class="text-gradient">Top Sales</span>
                     </h1>
                     
-                    <p class="text-base sm:text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-                        客户背调、方案生成、话术准备、异议处理、ROI 计算，<br class="hidden sm:block">
-                        一个 AI 助手搞定销售全流程，效率提升 10 倍。
+                    <p class="text-base sm:text-lg text-gray-300 mb-10 max-w-xl mx-auto">
+                        AI 销售助手，帮你搞定客户背调、方案生成、话术准备、异议处理
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 md:mb-16">
-                        <button onclick="showSection('research')" class="px-8 py-4 bg-gradient-primary rounded-xl font-semibold text-lg hover:opacity-90 transition-all glow hover:scale-105">
-                            <i class="fa fa-search mr-2"></i> 客户背调
-                        </button>
-                        <button onclick="showSection('solution')" class="px-8 py-4 glass rounded-xl font-semibold text-lg hover:bg-white/10 transition-all">
-                            <i class="fa fa-lightbulb-o mr-2"></i> 生成方案
-                        </button>
+                    <!-- 大对话输入框 -->
+                    <div class="max-w-2xl mx-auto mb-12">
+                        <div class="relative">
+                            <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
+                                class="w-full px-6 py-5 pr-16 bg-white/10 backdrop-blur border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-lg"
+                                onkeypress="if(event.key==='Enter') heroChat()">
+                            <button onclick="heroChat()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center hover:opacity-90 transition-all">
+                                <i class="fa fa-paper-plane text-white"></i>
+                            </button>
+                        </div>
                     </div>
                     
-                    <!-- 功能亮点 -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-12 md:mt-16">
-                        <div class="glass rounded-2xl p-6 card-hover">
-                            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-4 mx-auto">
-                                <i class="fa fa-bolt text-primary text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold mb-2">全流程覆盖</h3>
-                            <p class="text-gray-400 text-sm">从客户背调到签单跟进，覆盖销售全流程</p>
+                    <!-- 快捷功能入口 -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto mb-12">
+                        <div onclick="showSection('research')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">🔍</div>
+                            <div class="font-medium text-sm">客户背调</div>
+                            <div class="text-xs text-gray-400 mt-1">一键生成客户调研报告</div>
                         </div>
-                        <div class="glass rounded-2xl p-6 card-hover">
-                            <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mb-4 mx-auto">
-                                <i class="fa fa-brain text-secondary text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold mb-2">专业级输出</h3>
-                            <p class="text-gray-400 text-sm">内置行业知识库，输出质量对标 Top Sales</p>
+                        <div onclick="showSection('solution')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">💡</div>
+                            <div class="font-medium text-sm">方案生成</div>
+                            <div class="text-xs text-gray-400 mt-1">AI 生成专业方案建议书</div>
                         </div>
-                        <div class="glass rounded-2xl p-6 card-hover">
-                            <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4 mx-auto">
-                                <i class="fa fa-magic text-accent text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold mb-2">开箱即用</h3>
-                            <p class="text-gray-400 text-sm">不用学 Prompt，点几下就出结果，零门槛</p>
+                        <div onclick="showSection('pipeline')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">📊</div>
+                            <div class="font-medium text-sm">销售看板</div>
+                            <div class="text-xs text-gray-400 mt-1">销售漏斗与商机管理</div>
                         </div>
+                        <div onclick="showSection('customers')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">📇</div>
+                            <div class="font-medium text-sm">客户管理</div>
+                            <div class="text-xs text-gray-400 mt-1">客户档案与跟进记录</div>
+                        </div>
+                        <div onclick="showSection('tools')" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">🛠️</div>
+                            <div class="font-medium text-sm">销售工具箱</div>
+                            <div class="text-xs text-gray-400 mt-1">话术、异议、竞品、ROI</div>
+                        </div>
+                        <div onclick="scrollToIntro()" class="p-4 bg-white/5 backdrop-blur rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                            <div class="text-2xl mb-2">ℹ️</div>
+                            <div class="font-medium text-sm">了解销售易</div>
+                            <div class="text-xs text-gray-400 mt-1">产品介绍与核心优势</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 下滑提示 -->
+                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                        <i class="fa fa-chevron-down text-white/50 text-xl"></i>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- 为什么选择销售易 -->
-            <div class="py-20 bg-white">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
-                            为什么选择<span class="text-gradient">销售易</span>？
-                        </h2>
-                        <p class="text-gray-600 max-w-2xl mx-auto">
-                            通用大模型很强大，但销售需要的是懂业务、能落地、开箱即用的专用工具
-                        </p>
-                    </div>
+        <!-- 产品介绍区（下滑可见） -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">
+                        为什么选择<span class="text-gradient">销售易</span>？
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        通用大模型很强大，但销售需要的是懂业务、能落地、开箱即用的专用工具
+                    </p>
+                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- 优势 1 -->
@@ -294,7 +315,6 @@
                         </p>
                     </div>
                 </div>
-            </div>
             </div>
         </section>
 

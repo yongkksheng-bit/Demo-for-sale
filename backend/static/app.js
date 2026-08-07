@@ -751,6 +751,34 @@ function showSection(sectionId) {
     }
 }
 
+// 首页对话功能
+function heroChat() {
+    const input = document.getElementById('hero-chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+    
+    // 跳转到聊天页面，并自动发送消息
+    showSection('chat');
+    setTimeout(() => {
+        // 找到聊天输入框，填入消息并发送
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.value = message;
+            sendMessage();
+        }
+    }, 300);
+}
+
+// 滚动到产品介绍区
+function scrollToIntro() {
+    // 找到产品介绍区（hero 后面的第一个 section）
+    const hero = document.getElementById('hero');
+    const introSection = hero.nextElementSibling;
+    if (introSection) {
+        introSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
 // ========== 行业选择 ==========
 function renderIndustries() {
     const grid = document.getElementById('industry-grid');
