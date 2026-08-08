@@ -175,6 +175,35 @@ class RAGChain:
             "question": question,
             "history": formatted_history
         })
+    
+    def chat_stream(self, question: str, history: Optional[List] = None):
+        """流式多轮对话"""
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式对话")
+            mock_reply = mock_service.chat(question, history)
+            # 模拟逐字输出
+            for char in mock_reply:
+                yield char
+            return
+        
+        if history is None:
+            history = []
+        
+        # 转换历史消息格式
+        formatted_history = []
+        for msg in history:
+            if msg.get("role") == "user":
+                formatted_history.append(HumanMessage(content=msg["content"]))
+            elif msg.get("role") == "assistant":
+                formatted_history.append(AIMessage(content=msg["content"]))
+        
+        chain = self.get_chat_chain()
+        for chunk in chain.stream({
+            "question": question,
+            "history": formatted_history
+        }):
+            yield chunk
 
 
 # 全局单例

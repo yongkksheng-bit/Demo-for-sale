@@ -211,6 +211,21 @@ async def chat_endpoint(request: ChatRequest):
     return ChatResponse(reply=reply)
 
 
+@app.post("/api/v1/chat/stream")
+async def chat_stream_endpoint(request: ChatRequest):
+    """流式多轮对话接口（SSE）"""
+    from rag.chain import rag_chain
+    from fastapi.responses import StreamingResponse
+    
+    history = [msg.model_dump() for msg in (request.history or [])]
+    
+    async def generate():
+        for chunk in rag_chain.chat_stream(request.message, history):
+            yield f"data: {chunk}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+
 # ========== 方案生成接口 ==========
 
 @app.post("/api/v1/solution/generate", response_model=SolutionGenerateResponse)

@@ -11,6 +11,7 @@ let selectedScenario = null;
 let currentSolution = null;
 let currentResearch = null;
 let chatHistory = [];
+let currentIdentity = '云与AI销售'; // 当前销售身份
 
 // ========== 客户管理状态 ==========
 let customers = [];
@@ -112,6 +113,7 @@ const industries = [
 
 // ========== 初始化 ==========
 document.addEventListener('DOMContentLoaded', () => {
+    loadIdentity();
     loadData();
     renderIndustries();
     renderCustomerList();
@@ -737,6 +739,37 @@ function showROIFromCustomer() {
 }
 
 // ========== 页面切换 ==========
+// ========== 身份选择 ==========
+function showIdentityModal() {
+    document.getElementById('identity-modal').classList.remove('hidden');
+}
+
+function hideIdentityModal() {
+    document.getElementById('identity-modal').classList.add('hidden');
+}
+
+function selectIdentity(identity) {
+    currentIdentity = identity;
+    localStorage.setItem('xiaoshouyi_identity', identity);
+    document.getElementById('current-identity-name').textContent = identity;
+    hideIdentityModal();
+    
+    // 更新选中状态
+    document.querySelectorAll('.identity-option').forEach(btn => {
+        btn.classList.remove('border-gray-900', 'bg-gray-50');
+        btn.classList.add('border-gray-200');
+    });
+}
+
+function loadIdentity() {
+    const saved = localStorage.getItem('xiaoshouyi_identity');
+    if (saved) {
+        currentIdentity = saved;
+        document.getElementById('current-identity-name').textContent = saved;
+    }
+}
+
+// ========== 页面切换 ==========
 function showSection(sectionId) {
     // 隐藏所有 section
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
@@ -1127,11 +1160,13 @@ async function sendMessage() {
     addChatMessage('user', message);
     input.value = '';
     
-    // 添加 AI 思考中消息
-    const thinkingId = addChatMessage('assistant', '思考中...', true);
+    // 添加 AI 空消息，用于流式填充
+    const messageId = addChatMessage('assistant', '', false);
+    const messageEl = document.getElementById(`chat-msg-${messageId}`);
+    const contentEl = messageEl.querySelector('.chat-content');
     
     try {
-        const response = await fetch(`${API_BASE_URL}/chat`, {
+        const response = await fetch(`${API_BASE_URL}/chat/stream`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1144,13 +1179,47 @@ async function sendMessage() {
             throw new Error('对话失败');
         }
         
-        const data = await response.json();
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullReply = '';
         
-        // 移除思考中消息，添加真实回复
-        removeChatMessage(thinkingId);
-        addChatMessage('assistant', data.reply);
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n\n');
+            
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const content = line.slice(6);
+                    if (content) {
+                        fullReply += content;
+                        contentEl.textContent = fullReply;
+                        // 自动滚动到底部
+                        const chatMessages = document.getElementById('chat-messages');
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                }
+            }
+        }
         
-        // 更新历史
+        // 流式输出完成后，渲染 Markdown
+        contentEl.innerHTML = marked.parse(fullReply);
+        
+        // 保存到历史记录
+        chatHistory.push({ role: 'user', content: message });
+        chatHistory.push({ role: 'assistant', content: fullReply });
+        
+        // 自动滚动到底部
+        const chatMessages = document.getElementById('chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+    } catch (error) {
+        console.error('对话失败:', error);
+        contentEl.textContent = '抱歉，出了点问题，请稍后再试。';
+    }
+}        // 更新历史
         chatHistory.push({ role: 'user', content: message });
         chatHistory.push({ role: 'assistant', content: data.reply });
         
@@ -1163,12 +1232,12 @@ async function sendMessage() {
 
 function addChatMessage(role, content, isThinking = false) {
     const messagesContainer = document.getElementById('chat-messages');
-    const id = 'msg-' + Date.now();
+    const id = 'chat-msg-' + Date.now();
     
     const messageHtml = role === 'user' 
         ? `
             <div id="${id}" class="flex items-start space-x-3 justify-end">
-                <div class="bg-primary text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
+                <div class="bg-gray-900 text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
                     <p>${escapeHtml(content)}</p>
                 </div>
                 <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
@@ -1178,12 +1247,12 @@ function addChatMessage(role, content, isThinking = false) {
         `
         : `
             <div id="${id}" class="flex items-start space-x-3">
-                <div class="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                    <i class="fa fa-bolt text-white text-sm"></i>
+                <div class="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
+                    <span class="text-white text-sm font-bold italic">S</span>
                 </div>
                 <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
-                    <div class="text-gray-800 prose prose-sm max-w-none ${isThinking ? 'typing-cursor' : ''}">
-                        ${isThinking ? content : marked.parse(content)}
+                    <div class="chat-content text-gray-800 prose prose-sm max-w-none ${isThinking ? 'typing-cursor' : ''}">
+                        ${isThinking ? content : ''}
                     </div>
                 </div>
             </div>
