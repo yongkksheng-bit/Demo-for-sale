@@ -490,13 +490,14 @@ class SolutionService:
         
         return result
     
-    def generate_sales_script(self, industry: str, scenario: str) -> str:
+    def generate_sales_script(self, industry: str, scenario: str, identity: str = "大客户销售") -> str:
         """
         生成销售话术
         
         Args:
-            industry: 行业
+            industry: 客户行业
             scenario: 业务场景
+            identity: 销售身份
         
         Returns:
             销售话术
@@ -510,9 +511,13 @@ class SolutionService:
         context = self._retrieve_context(industry, scenario, k=3)
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的金牌销售顾问，擅长挖掘客户需求并给出精准的方案建议。
+            ("system", """你是一名{identity}领域的金牌销售，拥有10年以上实战经验，擅长挖掘客户需求并给出精准的方案建议。
 
-请为以下场景生成一段专业的销售开场白和需求挖掘话术。
+请站在{identity}的角度，为以下场景生成一段专业的销售开场白和需求挖掘话术。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写话术。
 
 【客户行业】{industry}
 【业务场景】{scenario}
@@ -541,18 +546,84 @@ class SolutionService:
         result = chain.invoke({
             "industry": industry,
             "scenario": scenario,
-            "context": context
+            "context": context,
+            "identity": identity
         })
         
         return result
     
-    def handle_objection(self, objection: str, industry: str = "") -> str:
+    def generate_sales_script_stream(self, industry: str, scenario: str, identity: str = "大客户销售"):
+        """
+        流式生成销售话术
+        
+        Args:
+            industry: 客户行业
+            scenario: 业务场景
+            identity: 销售身份
+        
+        Yields:
+            每个生成的文本块
+        """
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式生成销售话术")
+            mock_result = mock_service.generate_sales_script(industry, scenario)
+            for i in range(0, len(mock_result), 3):
+                yield mock_result[i:i+3]
+            return
+        
+        llm = self._get_streaming_llm()
+        context = self._retrieve_context(industry, scenario, k=3)
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是一名{identity}领域的金牌销售，拥有10年以上实战经验，擅长挖掘客户需求并给出精准的方案建议。
+
+请站在{identity}的角度，为以下场景生成一段专业的销售开场白和需求挖掘话术。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写话术。
+
+【客户行业】{industry}
+【业务场景】{scenario}
+
+【参考资料】
+{context}
+
+【话术结构】
+1. 开场白（建立信任，引起兴趣）
+2. 痛点共鸣（说出客户的痛）
+3. 价值铺垫（我们能帮你解决什么）
+4. 需求挖掘（引导客户说出更多需求）
+5. 下一步行动（约演示/拜访）
+
+【要求】
+1. 话术要自然，像真人说的，不要太书面
+2. 要有同理心，让客户觉得你懂他
+3. 要体现专业性，但不要堆砌术语
+4. 总长度控制在500字左右
+5. 分点列出，方便销售使用
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        for chunk in chain.stream({
+            "industry": industry,
+            "scenario": scenario,
+            "context": context,
+            "identity": identity
+        }):
+            yield chunk
+    
+    def handle_objection(self, objection: str, industry: str = "", identity: str = "大客户销售") -> str:
         """
         处理客户异议
         
         Args:
             objection: 客户异议
             industry: 行业（可选）
+            identity: 销售身份
         
         Returns:
             应对话术
@@ -565,9 +636,13 @@ class SolutionService:
         llm = self._get_llm()
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的销售培训专家，精通各种客户异议处理。
+            ("system", """你是一名{identity}领域的销售培训专家，拥有15年以上实战经验，精通各种客户异议处理。
 
-请针对以下客户异议，给出专业、有说服力的应对话术。
+请站在{identity}的角度，针对以下客户异议，给出专业、有说服力的应对话术。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写应对话术。
 
 【客户异议】{objection}
 【客户行业】{industry}
@@ -580,7 +655,7 @@ class SolutionService:
 【要求】
 1. 话术要自然、真诚，不要像背台词
 2. 要有理有据，不要强词夺理
-3. 要体现火山引擎的优势
+3. 要体现我们产品/方案的优势
 4. 分步骤说明应对思路和具体话术
 5. 总长度控制在300-500字
 """)
@@ -590,19 +665,78 @@ class SolutionService:
         
         result = chain.invoke({
             "objection": objection,
-            "industry": industry
+            "industry": industry,
+            "identity": identity
         })
         
         return result
     
-    def compare_competitor(self, competitor: str, industry: str = "", scenario: str = "") -> str:
+    def handle_objection_stream(self, objection: str, industry: str = "", identity: str = "大客户销售"):
+        """
+        流式处理客户异议
+        
+        Args:
+            objection: 客户异议
+            industry: 行业（可选）
+            identity: 销售身份
+        
+        Yields:
+            每个生成的文本块
+        """
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式处理异议")
+            mock_result = mock_service.handle_objection(objection, industry)
+            for i in range(0, len(mock_result), 3):
+                yield mock_result[i:i+3]
+            return
+        
+        llm = self._get_streaming_llm()
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是一名{identity}领域的销售培训专家，拥有15年以上实战经验，精通各种客户异议处理。
+
+请站在{identity}的角度，针对以下客户异议，给出专业、有说服力的应对话术。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写应对话术。
+
+【客户异议】{objection}
+【客户行业】{industry}
+
+【应对策略】
+1. 先共情，认可客户的顾虑
+2. 再用事实/数据/案例回应
+3. 最后转化为机会或下一步行动
+
+【要求】
+1. 话术要自然、真诚，不要像背台词
+2. 要有理有据，不要强词夺理
+3. 要体现我们产品/方案的优势
+4. 分步骤说明应对思路和具体话术
+5. 总长度控制在300-500字
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        for chunk in chain.stream({
+            "objection": objection,
+            "industry": industry,
+            "identity": identity
+        }):
+            yield chunk
+    
+    def compare_competitor(self, competitor: str, industry: str = "", scenario: str = "", identity: str = "大客户销售") -> str:
         """
         竞品对比分析
         
         Args:
-            competitor: 竞品名称（阿里云/腾讯云/华为云/AWS等）
+            competitor: 竞品名称
             industry: 行业（可选）
             scenario: 场景（可选）
+            identity: 销售身份
         
         Returns:
             竞品对比分析
@@ -615,9 +749,13 @@ class SolutionService:
         llm = self._get_llm()
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的资深解决方案专家，非常了解各家云厂商的优劣势。
+            ("system", """你是一名{identity}领域的资深产品专家，拥有10年以上行业经验，对市场上的主要竞品了如指掌。
 
-请针对以下竞品，生成一份专业的对比分析，帮助销售了解火山引擎的差异化优势。
+请站在{identity}的角度，生成一份专业的竞品对比分析报告，帮助销售了解我们的差异化优势。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写竞品对比。
 
 【竞品】{competitor}
 【行业】{industry}
@@ -629,21 +767,20 @@ class SolutionService:
 
 ## 二、核心能力对比（表格形式）
 从以下维度对比：
-- 大模型与AI能力
-- 计算与存储
-- 网络与CDN
-- 价格与性价比
+- 产品功能与能力
+- 技术实力与创新
 - 服务与支持
+- 价格与性价比
 - 生态与合作伙伴
+- 客户口碑与案例
 
-## 三、火山引擎的差异化优势
-- 字节跳动同款技术
-- 推荐算法与增长方法论
-- 视频与内容技术
-- 更灵活的商务政策
+## 三、我们的差异化优势
+- 我们的核心竞争力
+- 我们比竞品强的地方
+- 客户选择我们的理由
 
 ## 四、不同场景下的选择建议
-- 什么场景选火山引擎更合适
+- 什么场景选我们更合适
 - 什么场景选竞品也可以
 
 ## 五、销售话术建议
@@ -652,7 +789,7 @@ class SolutionService:
 
 【要求】
 1. 客观公正，不要恶意贬低竞品
-2. 突出火山引擎的差异化优势，尤其是字节跳动的技术积累
+2. 突出我们的差异化优势
 3. 要有数据和事实支撑，不要空泛
 4. 表格要清晰易读
 5. 总长度控制在800-1200字
@@ -662,16 +799,100 @@ class SolutionService:
         
         chain = prompt | llm | StrOutputParser()
         
-        print(f"⚔️  正在生成竞品对比: 火山引擎 vs {competitor}")
+        print(f"⚔️  正在生成竞品对比: 我们 vs {competitor}")
         result = chain.invoke({
             "competitor": competitor,
             "industry": industry if industry else "通用",
-            "scenario": scenario if scenario else "通用场景"
+            "scenario": scenario if scenario else "通用场景",
+            "identity": identity
         })
         
         return result
     
-    def generate_visit_checklist(self, company: str, industry: str = "", position: str = "") -> str:
+    def compare_competitor_stream(self, competitor: str, industry: str = "", scenario: str = "", identity: str = "大客户销售"):
+        """
+        流式生成竞品对比分析
+        
+        Args:
+            competitor: 竞品名称
+            industry: 行业（可选）
+            scenario: 场景（可选）
+            identity: 销售身份
+        
+        Yields:
+            每个生成的文本块
+        """
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式竞品对比")
+            mock_result = self._mock_compare(competitor, industry, scenario)
+            for i in range(0, len(mock_result), 3):
+                yield mock_result[i:i+3]
+            return
+        
+        llm = self._get_streaming_llm()
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是一名{identity}领域的资深产品专家，拥有10年以上行业经验，对市场上的主要竞品了如指掌。
+
+请站在{identity}的角度，生成一份专业的竞品对比分析报告，帮助销售了解我们的差异化优势。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写竞品对比。
+
+【竞品】{competitor}
+【行业】{industry}
+【场景】{scenario}
+
+【对比结构】
+## 一、整体定位对比
+- 各自的优势领域和市场定位
+
+## 二、核心能力对比（表格形式）
+从以下维度对比：
+- 产品功能与能力
+- 技术实力与创新
+- 服务与支持
+- 价格与性价比
+- 生态与合作伙伴
+- 客户口碑与案例
+
+## 三、我们的差异化优势
+- 我们的核心竞争力
+- 我们比竞品强的地方
+- 客户选择我们的理由
+
+## 四、不同场景下的选择建议
+- 什么场景选我们更合适
+- 什么场景选竞品也可以
+
+## 五、销售话术建议
+- 如何突出我们的优势
+- 如何应对客户的常见疑问
+
+【要求】
+1. 客观公正，不要恶意贬低竞品
+2. 突出我们的差异化优势
+3. 要有数据和事实支撑，不要空泛
+4. 表格要清晰易读
+5. 总长度控制在800-1200字
+6. 使用 Markdown 格式
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        print(f"⚔️  正在流式生成竞品对比: 我们 vs {competitor}")
+        for chunk in chain.stream({
+            "competitor": competitor,
+            "industry": industry if industry else "通用",
+            "scenario": scenario if scenario else "通用场景",
+            "identity": identity
+        }):
+            yield chunk
+    
+    def generate_visit_checklist(self, company: str, industry: str = "", position: str = "", identity: str = "大客户销售") -> str:
         """
         生成拜访准备清单
         
@@ -679,6 +900,7 @@ class SolutionService:
             company: 客户公司名称
             industry: 行业
             position: 对接人职位
+            identity: 销售身份
         
         Returns:
             拜访准备清单
@@ -691,9 +913,13 @@ class SolutionService:
         llm = self._get_llm()
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的销售总监，经验丰富，擅长指导销售做客户拜访准备。
+            ("system", """你是一名{identity}领域的销售总监，拥有15年以上实战经验，擅长指导销售做客户拜访准备。
 
-请为以下客户拜访生成一份详细的准备清单。
+请站在{identity}的角度，为以下客户拜访生成一份详细的准备清单。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写拜访清单。
 
 【客户公司】{company}
 【所属行业】{industry}
@@ -710,7 +936,7 @@ class SolutionService:
 ### 2. 资料准备
 - 公司介绍材料
 - 相关行业案例
-- 产品演示准备
+- 产品/方案演示准备
 - 报价方案（如需）
 
 ### 3. 话术准备
@@ -737,6 +963,116 @@ class SolutionService:
 
 【要求】
 1. 具体、可执行，不要空泛
+2. 结合{identity}的特点和行业特性
+3. 有针对性，不是通用模板
+4. 总长度控制在800-1200字
+5. 使用 Markdown 格式
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        print(f"✅ 正在生成拜访准备清单: {company}")
+        result = chain.invoke({
+            "company": company,
+            "industry": industry if industry else "通用行业",
+            "position": position if position else "对接人",
+            "identity": identity
+        })
+        
+        return result
+    
+    def generate_visit_checklist_stream(self, company: str, industry: str = "", position: str = "", identity: str = "大客户销售"):
+        """
+        流式生成拜访准备清单
+        
+        Args:
+            company: 客户公司名称
+            industry: 行业
+            position: 对接人职位
+            identity: 销售身份
+        
+        Yields:
+            每个生成的文本块
+        """
+        # Mock 模式
+        if settings.USE_MOCK:
+            print("🔧 使用 Mock 模式流式生成拜访清单")
+            mock_result = self._mock_visit_checklist(company, industry, position)
+            for i in range(0, len(mock_result), 3):
+                yield mock_result[i:i+3]
+            return
+        
+        llm = self._get_streaming_llm()
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", """你是一名{identity}领域的销售总监，拥有15年以上实战经验，擅长指导销售做客户拜访准备。
+
+请站在{identity}的角度，为以下客户拜访生成一份详细的准备清单。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写拜访清单。
+
+【客户公司】{company}
+【所属行业】{industry}
+【对接人职位】{position}
+
+【清单结构】
+## 一、拜访前准备
+### 1. 客户调研
+- 公司基本情况（规模、业务、发展阶段）
+- 行业地位和竞争对手
+- 可能的痛点和需求
+- 近期的动态和新闻
+
+### 2. 资料准备
+- 公司介绍材料
+- 相关行业案例
+- 产品/方案演示准备
+- 报价方案（如需）
+
+### 3. 话术准备
+- 开场白
+- 需求挖掘问题清单
+- 常见异议应对
+- 下一步行动引导
+
+## 二、拜访中注意事项
+- 破冰技巧
+- 倾听技巧
+- 需求挖掘方法
+- 价值呈现方式
+
+## 三、拜访后跟进
+- 当天跟进动作
+- 3天内跟进动作
+- 长期维护策略
+
+## 四、关键成功因素
+- 本次拜访的核心目标
+- 成功的衡量标准
+- 可能的风险点
+
+【要求】
+1. 具体、可执行，不要空泛
+2. 结合{identity}的特点和行业特性
+3. 有针对性，不是通用模板
+4. 总长度控制在800-1200字
+5. 使用 Markdown 格式
+""")
+        ])
+        
+        chain = prompt | llm | StrOutputParser()
+        
+        print(f"✅ 正在流式生成拜访准备清单: {company}")
+        for chunk in chain.stream({
+            "company": company,
+            "industry": industry if industry else "通用行业",
+            "position": position if position else "对接人",
+            "identity": identity
+        }):
+            yield chunk
 2. 站在销售的角度，实用为主
 3. 每个部分都要有具体的checklist条目
 4. 总长度控制在600-1000字

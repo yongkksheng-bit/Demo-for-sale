@@ -84,6 +84,7 @@ class SalesScriptRequest(BaseModel):
     """销售话术请求"""
     industry: str = Field(..., description="行业", min_length=1)
     scenario: str = Field(..., description="业务场景", min_length=1)
+    identity: str = Field(default="大客户销售", description="销售身份")
 
 
 class SalesScriptResponse(BaseModel):
@@ -95,6 +96,7 @@ class ObjectionRequest(BaseModel):
     """异议处理请求"""
     objection: str = Field(..., description="客户异议", min_length=1)
     industry: str = Field(default="", description="行业")
+    identity: str = Field(default="大客户销售", description="销售身份")
 
 
 class ObjectionResponse(BaseModel):
@@ -109,6 +111,7 @@ class CompetitorCompareRequest(BaseModel):
     competitor: str = Field(..., description="竞品名称", min_length=1)
     industry: str = Field(default="", description="行业")
     scenario: str = Field(default="", description="业务场景")
+    identity: str = Field(default="大客户销售", description="销售身份")
 
 
 class CompetitorCompareResponse(BaseModel):
@@ -123,6 +126,7 @@ class VisitChecklistRequest(BaseModel):
     company: str = Field(..., description="客户公司名称", min_length=1)
     industry: str = Field(default="", description="行业")
     position: str = Field(default="", description="对接人职位")
+    identity: str = Field(default="大客户销售", description="销售身份")
 
 
 class VisitChecklistResponse(BaseModel):

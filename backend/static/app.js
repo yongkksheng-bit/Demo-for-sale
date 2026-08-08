@@ -11,7 +11,7 @@ let selectedScenario = null;
 let currentSolution = null;
 let currentResearch = null;
 let chatHistory = [];
-let currentIdentity = '云与AI销售'; // 当前销售身份
+let currentIdentity = '大客户销售'; // 当前销售身份
 
 // ========== 客户管理状态 ==========
 let customers = [];

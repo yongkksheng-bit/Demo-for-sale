@@ -176,28 +176,60 @@
                 <!-- 中间：大对话输入框 + 快捷按钮 -->
                 <div class="flex-1 flex items-center justify-center px-6">
                     <div class="w-full max-w-3xl">
-                        <div class="relative mb-6">
-                            <input type="text" id="hero-chat-input" placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
-                                class="w-full px-6 py-6 pr-14 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-lg"
-                                onkeypress="if(event.key==='Enter') heroChat()">
-                            <button onclick="heroChat()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center hover:bg-gray-800 transition-all">
-                                <i class="fa fa-paper-plane text-white"></i>
+                        <!-- Kimi 风格输入框 -->
+                        <div class="relative mb-3">
+                            <div class="bg-white border border-gray-200 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                                <!-- 输入区域 -->
+                                <div class="relative">
+                                    <textarea id="hero-chat-input" 
+                                        placeholder="有什么可以帮你的？试试：帮我调研一下字节跳动"
+                                        rows="3"
+                                        class="w-full px-5 pt-5 pb-14 bg-transparent text-gray-900 placeholder-gray-400 focus:outline-none resize-none text-lg"
+                                        onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); heroChat(); }"></textarea>
+                                    
+                                    <!-- 左下角 + 号 -->
+                                    <button class="absolute left-4 bottom-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
+                                        <i class="fa fa-plus text-lg"></i>
+                                    </button>
+                                    
+                                    <!-- 右下角：发送按钮 -->
+                                    <button onclick="heroChat()" class="absolute right-4 bottom-4 w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-all">
+                                        <i class="fa fa-arrow-up text-white"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 选择身份按钮（Kimi 风格） -->
+                        <div class="mb-6">
+                            <button onclick="showIdentityModal()" class="inline-flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all text-sm">
+                                <i class="fa fa-briefcase"></i>
+                                <span>选择身份</span>
+                                <i class="fa fa-chevron-down text-xs"></i>
                             </button>
                         </div>
                         
-                        <!-- 快捷功能（紧跟输入框下面） -->
+                        <!-- 快捷功能按钮（胶囊风格） -->
                         <div class="flex flex-wrap justify-center gap-3">
-                            <button onclick="showSection('research')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-search mr-2 text-gray-400"></i>客户背调
+                            <button onclick="showSection('research')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-600">
+                                <i class="fa fa-search text-gray-400"></i>
+                                <span>客户背调</span>
                             </button>
-                            <button onclick="showSection('solution')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-lightbulb-o mr-2 text-gray-400"></i>方案生成
+                            <button onclick="showSection('solution')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-600">
+                                <i class="fa fa-lightbulb-o text-gray-400"></i>
+                                <span>方案生成</span>
                             </button>
-                            <button onclick="showSection('pipeline')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-bar-chart mr-2 text-gray-400"></i>销售看板
+                            <button onclick="showSection('pipeline')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-600">
+                                <i class="fa fa-bar-chart text-gray-400"></i>
+                                <span>销售看板</span>
                             </button>
-                            <button onclick="showSection('customers')" class="px-5 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-700">
-                                <i class="fa fa-address-book mr-2 text-gray-400"></i>客户管理
+                            <button onclick="showSection('customers')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-600">
+                                <i class="fa fa-address-book text-gray-400"></i>
+                                <span>客户管理</span>
+                            </button>
+                            <button onclick="showSection('tools')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all text-sm text-gray-600">
+                                <i class="fa fa-wrench text-gray-400"></i>
+                                <span>销售工具箱</span>
                             </button>
                         </div>
                     </div>
@@ -1417,104 +1449,71 @@
             
             <!-- 身份列表 -->
             <div class="p-6 overflow-y-auto max-h-[60vh]">
-                <!-- 科技互联网 -->
-                <div class="mb-6">
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">科技互联网</h4>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectIdentity('云与AI销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">云与AI销售</div>
-                            <div class="text-xs text-gray-500 mt-1">云计算、大模型、AI应用</div>
-                        </button>
-                        <button onclick="selectIdentity('企业软件销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">企业软件销售</div>
-                            <div class="text-xs text-gray-500 mt-1">ERP、CRM、OA等</div>
-                        </button>
-                        <button onclick="selectIdentity('网络安全销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">网络安全销售</div>
-                            <div class="text-xs text-gray-500 mt-1">安全产品、安全服务</div>
-                        </button>
-                        <button onclick="selectIdentity('半导体芯片销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">半导体芯片销售</div>
-                            <div class="text-xs text-gray-500 mt-1">芯片设计、IC产品</div>
-                        </button>
-                        <button onclick="selectIdentity('半导体设备销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">半导体设备销售</div>
-                            <div class="text-xs text-gray-500 mt-1">晶圆制造、封测设备</div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 企业服务 -->
-                <div class="mb-6">
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">企业服务</h4>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectIdentity('物流销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">物流销售</div>
-                            <div class="text-xs text-gray-500 mt-1">快递、快运、供应链</div>
-                        </button>
-                        <button onclick="selectIdentity('广告营销销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">广告营销销售</div>
-                            <div class="text-xs text-gray-500 mt-1">信息流、品牌广告</div>
-                        </button>
-                        <button onclick="selectIdentity('企业服务销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">企业服务销售</div>
-                            <div class="text-xs text-gray-500 mt-1">综合企业服务</div>
-                        </button>
-                        <button onclick="selectIdentity('人力资源服务')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">人力资源服务</div>
-                            <div class="text-xs text-gray-500 mt-1">招聘、外包、培训</div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 工业制造 -->
-                <div class="mb-6">
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">工业制造</h4>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectIdentity('工业自动化销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">工业自动化销售</div>
-                            <div class="text-xs text-gray-500 mt-1">PLC、机器人、智能制造</div>
-                        </button>
-                        <button onclick="selectIdentity('机械设备销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">机械设备销售</div>
-                            <div class="text-xs text-gray-500 mt-1">工业设备、生产线</div>
-                        </button>
-                        <button onclick="selectIdentity('医疗器械销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">医疗器械销售</div>
-                            <div class="text-xs text-gray-500 mt-1">医疗设备、耗材</div>
-                        </button>
-                        <button onclick="selectIdentity('化工材料销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">化工材料销售</div>
-                            <div class="text-xs text-gray-500 mt-1">原材料、精细化工</div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 金融消费 -->
-                <div class="mb-6">
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">金融消费</h4>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectIdentity('金融科技销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">金融科技销售</div>
-                            <div class="text-xs text-gray-500 mt-1">金融IT、支付系统</div>
-                        </button>
-                        <button onclick="selectIdentity('消费品销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">消费品销售</div>
-                            <div class="text-xs text-gray-500 mt-1">快消、零售、渠道</div>
-                        </button>
-                        <button onclick="selectIdentity('教育产品销售')" class="identity-option text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                            <div class="font-medium text-gray-900 text-sm">教育产品销售</div>
-                            <div class="text-xs text-gray-500 mt-1">教育软件、培训服务</div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 其他 -->
-                <div>
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">其他</h4>
-                    <button onclick="selectIdentity('其他行业销售')" class="identity-option w-full text-left px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-900 hover:bg-gray-50 transition-all">
-                        <div class="font-medium text-gray-900 text-sm">其他行业销售</div>
-                        <div class="text-xs text-gray-500 mt-1">通用销售助手，不限制行业</div>
+                <!-- 5大核心销售类型 -->
+                <div class="space-y-3">
+                    <button onclick="selectIdentity('大客户销售')" class="identity-option w-full text-left px-5 py-4 border border-gray-200 rounded-2xl hover:border-gray-900 hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-building text-gray-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">大客户销售</div>
+                                <div class="text-sm text-gray-500 mt-0.5">KA销售，负责头部企业客户，项目型销售</div>
+                            </div>
+                            <i class="fa fa-chevron-right text-gray-300"></i>
+                        </div>
+                    </button>
+                    
+                    <button onclick="selectIdentity('渠道销售')" class="identity-option w-full text-left px-5 py-4 border border-gray-200 rounded-2xl hover:border-gray-900 hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-sitemap text-gray-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">渠道销售</div>
+                                <div class="text-sm text-gray-500 mt-0.5">代理商、合作伙伴、生态体系建设与管理</div>
+                            </div>
+                            <i class="fa fa-chevron-right text-gray-300"></i>
+                        </div>
+                    </button>
+                    
+                    <button onclick="selectIdentity('广告营销销售')" class="identity-option w-full text-left px-5 py-4 border border-gray-200 rounded-2xl hover:border-gray-900 hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-bullhorn text-gray-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">广告营销销售</div>
+                                <div class="text-sm text-gray-500 mt-0.5">品牌广告、效果广告、营销解决方案</div>
+                            </div>
+                            <i class="fa fa-chevron-right text-gray-300"></i>
+                        </div>
+                    </button>
+                    
+                    <button onclick="selectIdentity('企业服务销售')" class="identity-option w-full text-left px-5 py-4 border border-gray-200 rounded-2xl hover:border-gray-900 hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-cloud text-gray-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">企业服务销售</div>
+                                <div class="text-sm text-gray-500 mt-0.5">SaaS、云计算、企业软件与服务</div>
+                            </div>
+                            <i class="fa fa-chevron-right text-gray-300"></i>
+                        </div>
+                    </button>
+                    
+                    <button onclick="selectIdentity('行业销售')" class="identity-option w-full text-left px-5 py-4 border border-gray-200 rounded-2xl hover:border-gray-900 hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-industry text-gray-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">行业销售</div>
+                                <div class="text-sm text-gray-500 mt-0.5">金融、零售、制造、政企、医疗等行业线</div>
+                            </div>
+                            <i class="fa fa-chevron-right text-gray-300"></i>
+                        </div>
                     </button>
                 </div>
             </div>

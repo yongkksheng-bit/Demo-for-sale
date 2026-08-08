@@ -294,10 +294,28 @@ async def generate_sales_script(request: SalesScriptRequest):
     
     script = solution_service.generate_sales_script(
         industry=request.industry,
-        scenario=request.scenario
+        scenario=request.scenario,
+        identity=request.identity
     )
     
     return SalesScriptResponse(script=script)
+
+
+@app.post("/api/v1/sales-script/stream")
+async def generate_sales_script_stream(request: SalesScriptRequest):
+    """流式生成销售话术（SSE）"""
+    from services.solution_service import solution_service
+    from fastapi.responses import StreamingResponse
+    
+    async def generate():
+        for chunk in solution_service.generate_sales_script_stream(
+            industry=request.industry,
+            scenario=request.scenario,
+            identity=request.identity
+        ):
+            yield f"data: {chunk}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 @app.post("/api/v1/objection", response_model=ObjectionResponse)
@@ -307,10 +325,28 @@ async def handle_objection(request: ObjectionRequest):
     
     response = solution_service.handle_objection(
         objection=request.objection,
-        industry=request.industry
+        industry=request.industry,
+        identity=request.identity
     )
     
     return ObjectionResponse(response=response)
+
+
+@app.post("/api/v1/objection/stream")
+async def handle_objection_stream(request: ObjectionRequest):
+    """流式处理客户异议（SSE）"""
+    from services.solution_service import solution_service
+    from fastapi.responses import StreamingResponse
+    
+    async def generate():
+        for chunk in solution_service.handle_objection_stream(
+            objection=request.objection,
+            industry=request.industry,
+            identity=request.identity
+        ):
+            yield f"data: {chunk}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 @app.post("/api/v1/competitor-compare", response_model=CompetitorCompareResponse)
@@ -321,10 +357,29 @@ async def competitor_compare(request: CompetitorCompareRequest):
     comparison = solution_service.compare_competitor(
         competitor=request.competitor,
         industry=request.industry,
-        scenario=request.scenario
+        scenario=request.scenario,
+        identity=request.identity
     )
     
     return CompetitorCompareResponse(comparison=comparison)
+
+
+@app.post("/api/v1/competitor-compare/stream")
+async def competitor_compare_stream(request: CompetitorCompareRequest):
+    """流式生成竞品对比分析（SSE）"""
+    from services.solution_service import solution_service
+    from fastapi.responses import StreamingResponse
+    
+    async def generate():
+        for chunk in solution_service.compare_competitor_stream(
+            competitor=request.competitor,
+            industry=request.industry,
+            scenario=request.scenario,
+            identity=request.identity
+        ):
+            yield f"data: {chunk}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 @app.post("/api/v1/visit-checklist", response_model=VisitChecklistResponse)
@@ -335,10 +390,29 @@ async def generate_visit_checklist(request: VisitChecklistRequest):
     checklist = solution_service.generate_visit_checklist(
         company=request.company,
         industry=request.industry,
-        position=request.position
+        position=request.position,
+        identity=request.identity
     )
     
     return VisitChecklistResponse(checklist=checklist)
+
+
+@app.post("/api/v1/visit-checklist/stream")
+async def generate_visit_checklist_stream(request: VisitChecklistRequest):
+    """流式生成拜访准备清单（SSE）"""
+    from services.solution_service import solution_service
+    from fastapi.responses import StreamingResponse
+    
+    async def generate():
+        for chunk in solution_service.generate_visit_checklist_stream(
+            company=request.company,
+            industry=request.industry,
+            position=request.position,
+            identity=request.identity
+        ):
+            yield f"data: {chunk}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 @app.post("/api/v1/company-research", response_model=CompanyResearchResponse)
