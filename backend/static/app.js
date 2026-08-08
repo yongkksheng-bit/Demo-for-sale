@@ -925,7 +925,7 @@ async function generateSolution() {
     // 模拟加载进度文字
     const loadingTexts = [
         '正在分析行业痛点...',
-        '正在匹配火山引擎产品...',
+        '正在匹配产品方案...',
         '正在生成方案架构...',
         '正在计算 ROI 估算...',
         '正在完善方案细节...'
@@ -948,7 +948,8 @@ async function generateSolution() {
                 industry: selectedIndustry,
                 scenario: selectedScenario,
                 company_size: companySize,
-                custom_requirements: customReq
+                custom_requirements: customReq,
+                identity: currentIdentity
             })
         });
         
@@ -1171,7 +1172,8 @@ async function sendMessage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 message: message,
-                history: chatHistory
+                history: chatHistory,
+                identity: currentIdentity
             })
         });
         
@@ -1467,7 +1469,8 @@ async function generateResearch() {
                 company_name: companyName,
                 industry: industry,
                 position: position,
-                focus: focus
+                focus: focus,
+                identity: currentIdentity
             })
         });
 

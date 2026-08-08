@@ -207,7 +207,7 @@ async def chat_endpoint(request: ChatRequest):
     from rag.chain import rag_chain
     
     history = [msg.model_dump() for msg in (request.history or [])]
-    reply = rag_chain.chat(request.message, history)
+    reply = rag_chain.chat(request.message, history, identity=request.identity)
     return ChatResponse(reply=reply)
 
 
@@ -220,7 +220,7 @@ async def chat_stream_endpoint(request: ChatRequest):
     history = [msg.model_dump() for msg in (request.history or [])]
     
     async def generate():
-        for chunk in rag_chain.chat_stream(request.message, history):
+        for chunk in rag_chain.chat_stream(request.message, history, identity=request.identity):
             yield f"data: {chunk}\n\n"
     
     return StreamingResponse(generate(), media_type="text/event-stream")
@@ -237,7 +237,8 @@ async def generate_solution(request: SolutionGenerateRequest):
         industry=request.industry,
         scenario=request.scenario,
         company_size=request.company_size,
-        custom_requirements=request.custom_requirements
+        custom_requirements=request.custom_requirements,
+        identity=request.identity
     )
     
     return SolutionGenerateResponse(**result)
@@ -253,7 +254,8 @@ async def generate_solution_stream(request: SolutionGenerateRequest):
             industry=request.industry,
             scenario=request.scenario,
             company_size=request.company_size,
-            custom_requirements=request.custom_requirements
+            custom_requirements=request.custom_requirements,
+            identity=request.identity
         ):
             yield f"data: {json.dumps({'content': chunk})}\n\n"
         # 结束标记
@@ -348,7 +350,8 @@ async def generate_company_research(request: CompanyResearchRequest):
         company_name=request.company_name,
         industry=request.industry,
         position=request.position,
-        focus=request.focus
+        focus=request.focus,
+        identity=request.identity
     )
     
     return CompanyResearchResponse(**result)

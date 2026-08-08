@@ -39,6 +39,7 @@ class ChatRequest(BaseModel):
     """对话请求"""
     message: str = Field(..., description="用户消息", min_length=1)
     history: Optional[List[ChatMessage]] = Field(default=None, description="历史消息")
+    identity: str = Field(default="云与AI销售", description="销售身份")
 
 
 class ChatResponse(BaseModel):
@@ -54,6 +55,7 @@ class SolutionGenerateRequest(BaseModel):
     scenario: str = Field(..., description="业务场景/痛点", min_length=1)
     company_size: str = Field(default="中型企业", description="企业规模")
     custom_requirements: str = Field(default="", description="定制化需求")
+    identity: str = Field(default="云与AI销售", description="销售身份")
 
 
 class SolutionGenerateResponse(BaseModel):
@@ -134,6 +136,7 @@ class CompanyResearchRequest(BaseModel):
     industry: str = Field(default="", description="所属行业")
     position: str = Field(default="", description="拜访对象职位")
     focus: str = Field(default="", description="重点关注方向")
+    identity: str = Field(default="云与AI销售", description="销售身份")
 
 
 class CompanyResearchResponse(BaseModel):

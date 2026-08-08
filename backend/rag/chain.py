@@ -98,19 +98,22 @@ class RAGChain:
             
             # 对话 Prompt
             chat_prompt = ChatPromptTemplate.from_messages([
-                ("system", """你是火山引擎智能方案顾问，一位专业的AI销售助手。
+                ("system", """你是一名{identity}领域的资深AI销售助手。
+
+你的身份是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全站在{identity}的角度回答用户的问题。
 
 你的职责是：
-1. 解答用户关于火山引擎产品、方案、技术的问题
+1. 解答用户关于你所在行业产品、方案、技术的问题
 2. 帮助用户分析业务痛点，推荐合适的解决方案
-3. 生成专业的方案建议书
-4. 提供销售话术建议
+3. 提供专业的销售建议和话术指导
+4. 帮助用户提升销售效率和成单率
 
 【风格要求】
 - 专业、自信、有亲和力
 - 善于引导用户需求
 - 用数据和案例说话
-- 自然地突出火山引擎的优势
+- 自然地突出你所在行业的产品和方案优势
 
 【参考资料】
 {context}
@@ -152,7 +155,7 @@ class RAGChain:
         chain = self.get_qa_chain()
         return chain.invoke(question)
     
-    def chat(self, question: str, history: Optional[List] = None) -> str:
+    def chat(self, question: str, history: Optional[List] = None, identity: str = "云与AI销售") -> str:
         """多轮对话"""
         # Mock 模式
         if settings.USE_MOCK:
@@ -173,10 +176,11 @@ class RAGChain:
         chain = self.get_chat_chain()
         return chain.invoke({
             "question": question,
-            "history": formatted_history
+            "history": formatted_history,
+            "identity": identity
         })
     
-    def chat_stream(self, question: str, history: Optional[List] = None):
+    def chat_stream(self, question: str, history: Optional[List] = None, identity: str = "云与AI销售"):
         """流式多轮对话"""
         # Mock 模式
         if settings.USE_MOCK:
@@ -201,7 +205,8 @@ class RAGChain:
         chain = self.get_chat_chain()
         for chunk in chain.stream({
             "question": question,
-            "history": formatted_history
+            "history": formatted_history,
+            "identity": identity
         }):
             yield chunk
 

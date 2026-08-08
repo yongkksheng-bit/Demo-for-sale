@@ -63,15 +63,17 @@ class SolutionService:
     
     def generate_solution(self, industry: str, scenario: str, 
                           company_size: str = "中型企业",
-                          custom_requirements: str = "") -> Dict:
+                          custom_requirements: str = "",
+                          identity: str = "云与AI销售") -> Dict:
         """
         生成完整的方案建议书
         
         Args:
-            industry: 行业
+            industry: 客户行业
             scenario: 业务场景/痛点
             company_size: 企业规模
             custom_requirements: 定制化需求
+            identity: 销售身份（如：云与AI销售、物流销售等）
         
         Returns:
             方案建议书字典
@@ -85,9 +87,13 @@ class SolutionService:
         context = self._retrieve_context(industry, scenario)
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的资深解决方案架构师，拥有10年以上企业数字化转型咨询经验。
+            ("system", """你是一名{identity}领域的资深解决方案专家，拥有10年以上行业销售和方案咨询经验。
 
-请根据以下信息，为客户生成一份专业、有说服力的解决方案建议书。
+请站在{identity}的角度，根据以下信息，为客户生成一份专业、有说服力的解决方案建议书。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写方案。
 
 【客户信息】
 - 行业：{industry}
@@ -106,19 +112,19 @@ class SolutionService:
 ## 一、行业背景与挑战
 - 行业发展趋势
 - 企业面临的核心痛点
-- 数字化转型的必要性
+- 数字化/智能化转型的必要性
 
 ## 二、解决方案概述
 - 方案整体架构
 - 核心设计理念
-- 方案亮点与优势
+- 方案亮点与差异化优势
 
-## 三、火山引擎产品组合
-详细列出使用的火山引擎产品，每个产品包含：
-- 产品名称
-- 核心功能
+## 三、推荐产品与服务组合
+详细列出推荐的产品/服务组合，每个产品包含：
+- 产品/服务名称
+- 核心功能与价值
 - 在本方案中的作用
-- 为什么选择这个产品
+- 为什么推荐这个产品/服务
 
 ## 四、方案实施路径
 - 分阶段实施计划
@@ -127,14 +133,14 @@ class SolutionService:
 
 ## 五、客户价值与ROI
 - 业务价值（效率提升、成本降低、收入增长等）
-- 技术价值（架构升级、能力沉淀等）
+- 技术/运营价值（能力升级、流程优化等）
 - 投资回报预估
 
-## 六、为什么选择火山引擎
-- 技术优势
-- 服务能力
-- 成功案例
-- 生态优势
+## 六、为什么选择我们
+- 我们的核心优势
+- 服务能力与保障
+- 成功案例与客户口碑
+- 生态与资源优势
 
 ## 七、下一步行动建议
 - 立即可以开展的工作
@@ -184,15 +190,17 @@ class SolutionService:
     
     def generate_solution_stream(self, industry: str, scenario: str,
                                   company_size: str = "中型企业",
-                                  custom_requirements: str = ""):
+                                  custom_requirements: str = "",
+                                  identity: str = "云与AI销售"):
         """
         流式生成方案建议书（SSE）
         
         Args:
-            industry: 行业
+            industry: 客户行业
             scenario: 业务场景/痛点
             company_size: 企业规模
             custom_requirements: 定制化需求
+            identity: 销售身份
         
         Yields:
             每个生成的文本块
@@ -211,9 +219,13 @@ class SolutionService:
         context = self._retrieve_context(industry, scenario)
         
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """你是火山引擎的资深解决方案架构师，拥有10年以上企业数字化转型咨询经验。
+            ("system", """你是一名{identity}领域的资深解决方案专家，拥有10年以上行业销售和方案咨询经验。
 
-请根据以下信息，为客户生成一份专业、有说服力的解决方案建议书。
+请站在{identity}的角度，根据以下信息，为客户生成一份专业、有说服力的解决方案建议书。
+
+【你的身份】
+你是一名{identity}，精通你所在领域的产品、方案、行业痛点和销售话术。
+请完全从你的身份出发，用你所在行业的专业术语和表达方式来写方案。
 
 【客户信息】
 - 行业：{industry}
@@ -304,7 +316,8 @@ class SolutionService:
             yield chunk
     
     def generate_company_research(self, company_name: str, industry: str = "", 
-                                   position: str = "", focus: str = "") -> Dict:
+                                   position: str = "", focus: str = "",
+                                   identity: str = "云与AI销售") -> Dict:
         """
         生成客户背调报告
         
@@ -313,6 +326,7 @@ class SolutionService:
             industry: 行业
             position: 拜访对象职位
             focus: 重点关注方向
+            identity: 销售身份
         
         Returns:
             背调报告
@@ -326,6 +340,9 @@ class SolutionService:
         
         prompt = ChatPromptTemplate.from_messages([
             ("system", """你是一位资深的销售情报专家，拥有15年以上 B2B 销售经验，擅长做客户背调和拜访准备。
+
+你的身份是一名{identity}，请完全站在{identity}的角度来做背调。
+重点关注{identity}在拜访客户时最关心的信息、最可能的切入点、最有效的话术。
 
 请根据以下信息，为销售生成一份专业、实用、可落地的客户背调报告。
 
@@ -356,12 +373,12 @@ class SolutionService:
 - 所在行业发展趋势与挑战
 - 主要竞争对手分析
 - 客户的竞争优势与劣势
-- 行业数字化转型现状
+- 行业数字化/智能化转型现状
 
 ## 四、潜在需求与合作切入点
-- 3-5 个可能的数字化/智能化需求点
+- 3-5 个可能的需求点（结合{identity}的产品/服务）
 - 每个需求点的业务价值和紧迫度
-- 火山引擎哪些产品可能匹配
+- 我们哪些产品/服务可能匹配
 - 推荐的优先级排序
 
 ## 五、拜访策略建议
