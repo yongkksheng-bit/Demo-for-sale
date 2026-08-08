@@ -2062,13 +2062,13 @@ function selectTool(toolName) {
     // 更新左侧导航选中状态
     document.querySelectorAll('.tool-nav-btn').forEach(function(btn) {
         btn.style.backgroundColor = '';
-        btn.style.color = '';
+        btn.style.fontWeight = '';
     });
     
     var activeBtn = document.getElementById('tool-' + toolName);
     if (activeBtn) {
-        activeBtn.style.backgroundColor = '#111827';
-        activeBtn.style.color = 'white';
+        activeBtn.style.backgroundColor = '#e5e7eb';
+        activeBtn.style.fontWeight = '600';
     }
     
     // 如果是ROI计算器，重新计算一下
