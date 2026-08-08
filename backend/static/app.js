@@ -755,7 +755,7 @@ function hideIdentityModal() {
     document.getElementById('identity-modal').classList.add('hidden');
 }
 
-function selectIndustry(industry) {
+function selectIdentityIndustry(industry) {
     identityIndustry = industry;
     updateIdentitySelectionUI();
 }
