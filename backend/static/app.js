@@ -1662,7 +1662,8 @@ async function generateSalesScript() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 industry: industry,
-                scenario: scenario
+                scenario: scenario,
+                identity: currentIdentity,
             })
         });
         
@@ -1716,7 +1717,8 @@ async function handleObjection() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 objection: objection,
-                industry: industry
+                industry: industry,
+                identity: currentIdentity,
             })
         });
         
@@ -1763,7 +1765,8 @@ async function generateCompetitorCompare() {
             body: JSON.stringify({
                 competitor: competitor,
                 industry: industry,
-                scenario: scenario
+                scenario: scenario,
+                identity: currentIdentity,
             })
         });
 
@@ -1919,7 +1922,8 @@ async function generateVisitChecklist() {
             body: JSON.stringify({
                 company: company,
                 industry: industry,
-                position: position
+                position: position,
+                identity: currentIdentity,
             })
         });
 
