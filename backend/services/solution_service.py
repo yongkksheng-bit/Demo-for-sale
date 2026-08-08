@@ -1073,24 +1073,6 @@ class SolutionService:
             "identity": identity
         }):
             yield chunk
-2. 站在销售的角度，实用为主
-3. 每个部分都要有具体的checklist条目
-4. 总长度控制在600-1000字
-5. 使用 Markdown 格式，用 checkbox 形式列出清单
-""")
-        ])
-        
-        chain = prompt | llm | StrOutputParser()
-        
-        print(f"📋 正在生成拜访准备清单: {company}")
-        result = chain.invoke({
-            "company": company,
-            "industry": industry if industry else "待确认",
-            "position": position if position else "待确认"
-        })
-        
-        return result
-    
     def _mock_compare(self, competitor: str, industry: str, scenario: str) -> str:
         """Mock 竞品对比"""
         return f"""# 火山引擎 vs {competitor} 对比分析
