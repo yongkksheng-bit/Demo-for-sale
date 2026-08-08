@@ -2059,38 +2059,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== 销售工具箱切换 ==========
 function selectTool(toolName) {
-    // 更新左侧导航选中状态
-    document.querySelectorAll('.tool-nav-btn').forEach(btn => {
-        btn.classList.remove('bg-gray-900', 'text-white');
-        btn.classList.add('hover:bg-gray-50');
-        btn.querySelector('i').classList.remove('text-white');
-        btn.querySelector('i').classList.add('text-gray-400');
-        btn.querySelector('.font-medium').classList.remove('text-white');
-        btn.querySelector('.font-medium').classList.add('text-gray-900');
-        btn.querySelector('.text-xs').classList.remove('text-gray-300');
-        btn.querySelector('.text-xs').classList.add('text-gray-400');
-    });
-    
-    const activeBtn = document.getElementById('tool-' + toolName);
-    if (activeBtn) {
-        activeBtn.classList.add('bg-gray-900', 'text-white');
-        activeBtn.classList.remove('hover:bg-gray-50');
-        activeBtn.querySelector('i').classList.add('text-white');
-        activeBtn.querySelector('i').classList.remove('text-gray-400');
-        activeBtn.querySelector('.font-medium').classList.add('text-white');
-        activeBtn.querySelector('.font-medium').classList.remove('text-gray-900');
-        activeBtn.querySelector('.text-xs').classList.add('text-gray-300');
-        activeBtn.querySelector('.text-xs').classList.remove('text-gray-400');
-    }
-    
     // 切换右侧内容
-    document.querySelectorAll('.tool-content').forEach(content => {
-        content.classList.add('hidden');
+    document.querySelectorAll('.tool-content').forEach(function(el) {
+        el.classList.add('hidden');
     });
     
-    const activeContent = document.getElementById('tool-content-' + toolName);
+    var activeContent = document.getElementById('tool-content-' + toolName);
     if (activeContent) {
         activeContent.classList.remove('hidden');
+    }
+    
+    // 更新左侧导航选中状态
+    document.querySelectorAll('.tool-nav-btn').forEach(function(btn) {
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+    });
+    
+    var activeBtn = document.getElementById('tool-' + toolName);
+    if (activeBtn) {
+        activeBtn.style.backgroundColor = '#111827';
+        activeBtn.style.color = 'white';
     }
     
     // 如果是ROI计算器，重新计算一下
@@ -2098,3 +2086,4 @@ function selectTool(toolName) {
         calculateROI();
     }
 }
+    
