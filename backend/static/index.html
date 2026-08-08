@@ -1020,7 +1020,7 @@
 
 
         <!-- 方案生成区域 -->
-        <section id="solution" class="section hidden py-16">
+        <section id="solution" class="section hidden py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">智能方案生成</h2>
@@ -1033,19 +1033,19 @@
                         <!-- 步骤指示器 -->
                         <div class="bg-white rounded-2xl shadow-sm p-6">
                             <div class="flex items-center justify-between mb-6">
-                                <div class="flex items-center">
-                                    <div id="step1-dot" class="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm text-gray-900 flex items-center justify-center text-sm font-bold">1</div>
-                                    <span class="ml-2 font-medium text-dark">你卖什么？</span>
+                                <div class="flex items-center flex-shrink-0">
+                                    <div id="step1-dot" class="w-7 h-7 rounded-full flex-shrink-0 bg-white border border-gray-200 shadow-sm text-gray-900 flex items-center justify-center text-sm font-bold">1</div>
+                                    <span class="ml-2 font-medium text-gray-900 text-sm whitespace-nowrap">你卖什么</span>
                                 </div>
                                 <div class="flex-1 h-0.5 bg-gray-200 mx-2"></div>
-                                <div class="flex items-center">
-                                    <div id="step2-dot" class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">2</div>
-                                    <span class="ml-2 text-gray-500 text-sm">选择场景</span>
+                                <div class="flex items-center flex-shrink-0">
+                                    <div id="step2-dot" class="w-7 h-7 rounded-full flex-shrink-0 bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">2</div>
+                                    <span class="ml-2 text-gray-500 text-sm whitespace-nowrap">选择场景</span>
                                 </div>
                                 <div class="flex-1 h-0.5 bg-gray-200 mx-2"></div>
-                                <div class="flex items-center">
-                                    <div id="step3-dot" class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">3</div>
-                                    <span class="ml-2 text-gray-500 text-sm">生成方案</span>
+                                <div class="flex items-center flex-shrink-0">
+                                    <div id="step3-dot" class="w-7 h-7 rounded-full flex-shrink-0 bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">3</div>
+                                    <span class="ml-2 text-gray-500 text-sm whitespace-nowrap">生成方案</span>
                                 </div>
                             </div>
                         </div>
@@ -1162,7 +1162,7 @@
         </section>
 
         <!-- 智能对话 -->
-               id="chat" class="section hidden py-16">
+        <section id="chat" class="section hidden py-16 bg-gray-50">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">智能对话顾问</h2>
@@ -1217,50 +1217,50 @@
             </div>
 
         <!-- 销售工具箱 -->
-        <section id="tools" class="section hidden py-8">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">销售工具箱</h2>
-                    <p class="text-gray-500 text-sm">助力销售全流程，提升成单效率</p>
+        <section id="tools" class="section hidden py-16 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">销售工具箱</h2>
+                    <p class="text-gray-600">助力销售全流程，提升成单效率</p>
                 </div>
 
                 <div class="flex gap-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <!-- 左侧工具列表 -->
-                    <div class="w-56 border-r border-gray-100 py-4">
+                    <div class="w-60 border-r border-gray-100 py-6">
                         <div class="space-y-1 px-3">
                             <button onclick="selectTool('script')" id="tool-script" class="tool-nav-btn w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fa fa-microphone text-gray-400 text-lg w-5 text-center"></i>
                                 <div>
-                                    <div class="font-medium text-gray-900 text-sm">销售话术</div>
-                                    <div class="text-xs text-gray-400">生成专业话术</div>
+                                    <div class="font-medium text-gray-900 text-base">销售话术</div>
+                                    <div class="text-sm text-gray-500">生成专业话术</div>
                                 </div>
                             </button>
                             <button onclick="selectTool('objection')" id="tool-objection" class="tool-nav-btn w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fa fa-shield text-gray-400 text-lg w-5 text-center"></i>
                                 <div>
-                                    <div class="font-medium text-gray-900 text-sm">异议处理</div>
-                                    <div class="text-xs text-gray-400">应对客户疑问</div>
+                                    <div class="font-medium text-gray-900 text-base">异议处理</div>
+                                    <div class="text-sm text-gray-500">应对客户疑问</div>
                                 </div>
                             </button>
                             <button onclick="selectTool('competitor')" id="tool-competitor" class="tool-nav-btn w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fa fa-balance-scale text-gray-400 text-lg w-5 text-center"></i>
                                 <div>
-                                    <div class="font-medium text-gray-900 text-sm">竞品对比</div>
-                                    <div class="text-xs text-gray-400">分析差异化优势</div>
+                                    <div class="font-medium text-gray-900 text-base">竞品对比</div>
+                                    <div class="text-sm text-gray-500">分析差异化优势</div>
                                 </div>
                             </button>
                             <button onclick="selectTool('checklist')" id="tool-checklist" class="tool-nav-btn w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fa fa-check-square text-gray-400 text-lg w-5 text-center"></i>
                                 <div>
-                                    <div class="font-medium text-gray-900 text-sm">拜访清单</div>
-                                    <div class="text-xs text-gray-400">拜访准备检查</div>
+                                    <div class="font-medium text-gray-900 text-base">拜访清单</div>
+                                    <div class="text-sm text-gray-500">拜访准备检查</div>
                                 </div>
                             </button>
                             <button onclick="selectTool('roi')" id="tool-roi" class="tool-nav-btn w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fa fa-calculator text-gray-400 text-lg w-5 text-center"></i>
                                 <div>
-                                    <div class="font-medium text-gray-900 text-sm">ROI计算器</div>
-                                    <div class="text-xs text-gray-400">投资回报分析</div>
+                                    <div class="font-medium text-gray-900 text-base">ROI 计算器</div>
+                                    <div class="text-sm text-gray-500">投资回报分析</div>
                                 </div>
                             </button>
                         </div>
@@ -1270,8 +1270,8 @@
                     <div class="flex-1 p-6 min-h-[500px]">
                         <!-- 销售话术 -->
                         <div id="tool-content-script" class="tool-content">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">销售话术生成</h3>
-                            <p class="text-gray-400 text-sm mb-6">根据行业和场景生成专业销售话术</p>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">销售话术生成</h3>
+                            <p class="text-gray-500 text-base mb-6">根据行业和场景生成专业销售话术</p>
                             
                             <div class="space-y-4 max-w-lg">
                                 <div class="grid grid-cols-2 gap-4">
@@ -1307,7 +1307,7 @@
 
                         <!-- 异议处理 -->
                         <div id="tool-content-objection" class="tool-content hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">异议处理助手</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">异议处理助手</h3>
                             <p class="text-gray-400 text-sm mb-6">智能分析客户异议，给出专业回应</p>
                             
                             <div class="space-y-4 max-w-lg">
@@ -1348,7 +1348,7 @@
 
                         <!-- 竞品对比 -->
                         <div id="tool-content-competitor" class="tool-content hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">竞品对比分析</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">竞品对比分析</h3>
                             <p class="text-gray-400 text-sm mb-6">对比分析与竞品的差异化优势</p>
                             
                             <div class="space-y-4 max-w-lg">
@@ -1389,7 +1389,7 @@
 
                         <!-- 拜访清单 -->
                         <div id="tool-content-checklist" class="tool-content hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">拜访准备清单</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">拜访准备清单</h3>
                             <p class="text-gray-400 text-sm mb-6">生成客户拜访前的准备检查清单</p>
                             
                             <div class="space-y-4 max-w-lg">
@@ -1432,7 +1432,7 @@
 
                         <!-- ROI计算器 -->
                         <div id="tool-content-roi" class="tool-content hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">ROI 投资回报计算器</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">ROI 投资回报计算器</h3>
                             <p class="text-gray-400 text-sm mb-6">快速计算方案的投资回报周期</p>
                             
                             <div class="grid grid-cols-2 gap-8">
@@ -1478,6 +1478,7 @@
                     </div>
                 </div>
             </div>
+        </section>
         </section>
 
     <!-- 回到顶部按钮 -->
