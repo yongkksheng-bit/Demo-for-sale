@@ -740,32 +740,123 @@ function showROIFromCustomer() {
 
 // ========== 页面切换 ==========
 // ========== 身份选择 ==========
+let identityIndustry = "";
+let identitySalesType = "";
+
 function showIdentityModal() {
     document.getElementById('identity-modal').classList.remove('hidden');
+    // 重置选中状态
+    identityIndustry = "";
+    identitySalesType = "";
+    updateIdentitySelectionUI();
 }
 
 function hideIdentityModal() {
     document.getElementById('identity-modal').classList.add('hidden');
 }
 
-function selectIdentity(identity) {
-    currentIdentity = identity;
-    localStorage.setItem('xiaoshouyi_identity', identity);
-    document.getElementById('current-identity-name').textContent = identity;
-    hideIdentityModal();
-    
-    // 更新选中状态
-    document.querySelectorAll('.identity-option').forEach(btn => {
+function selectIndustry(industry) {
+    identityIndustry = industry;
+    updateIdentitySelectionUI();
+}
+
+function selectSalesType(salesType) {
+    identitySalesType = salesType;
+    updateIdentitySelectionUI();
+}
+
+function updateIdentitySelectionUI() {
+    // 更新行业选中状态
+    document.querySelectorAll('.industry-option').forEach(btn => {
         btn.classList.remove('border-gray-900', 'bg-gray-50');
         btn.classList.add('border-gray-200');
     });
+    if (identityIndustry) {
+        document.querySelectorAll('.industry-option').forEach(btn => {
+            if (btn.textContent.includes(identityIndustry)) {
+                btn.classList.remove('border-gray-200');
+                btn.classList.add('border-gray-900', 'bg-gray-50');
+            }
+        });
+        // 解锁第二步
+        const salesTypeSection = document.getElementById('sales-type-section');
+        if (salesTypeSection) {
+            salesTypeSection.classList.remove('opacity-50', 'pointer-events-none');
+        }
+        const step2Badge = document.getElementById('step2-badge');
+        if (step2Badge) {
+            step2Badge.classList.remove('bg-gray-300');
+            step2Badge.classList.add('bg-gray-900');
+        }
+    }
+    
+    // 更新销售类型选中状态
+    document.querySelectorAll('.sales-type-option').forEach(btn => {
+        btn.classList.remove('border-gray-900', 'bg-gray-50');
+        btn.classList.add('border-gray-200');
+    });
+    if (identitySalesType) {
+        document.querySelectorAll('.sales-type-option').forEach(btn => {
+            if (btn.textContent.includes(identitySalesType)) {
+                btn.classList.remove('border-gray-200');
+                btn.classList.add('border-gray-900', 'bg-gray-50');
+            }
+        });
+    }
+    
+    // 更新确认按钮状态
+    const confirmBtn = document.getElementById('confirm-identity-btn');
+    if (confirmBtn) {
+        if (identityIndustry && identitySalesType) {
+            confirmBtn.disabled = false;
+            confirmBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
+            confirmBtn.classList.add('bg-gray-900', 'hover:bg-gray-800', 'cursor-pointer');
+            confirmBtn.textContent = `确认：${identityIndustry} · ${identitySalesType}`;
+        } else {
+            confirmBtn.disabled = true;
+            confirmBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
+            confirmBtn.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'cursor-pointer');
+            if (!identityIndustry) {
+                confirmBtn.textContent = "请先选择行业";
+            } else {
+                confirmBtn.textContent = "请选择销售类型";
+            }
+        }
+    }
+}
+
+function confirmIdentity() {
+    if (!identityIndustry || !identitySalesType) return;
+    
+    const identity = `${identityIndustry} · ${identitySalesType}`;
+    currentIdentity = identity;
+    localStorage.setItem('xiaoshouyi_identity', identity);
+    
+    // 更新显示
+    updateIdentityDisplay(identity);
+    
+    hideIdentityModal();
+}
+
+function updateIdentityDisplay(identity) {
+    // 更新侧边栏底部
+    const sidebarIdentity = document.getElementById('current-identity-name');
+    if (sidebarIdentity) {
+        sidebarIdentity.textContent = identity;
+    }
+    
+    // 更新首页选择身份按钮
+    const heroIdentityBtn = document.getElementById('hero-identity-text');
+    if (heroIdentityBtn) {
+        heroIdentityBtn.textContent = identity;
+    }
 }
 
 function loadIdentity() {
     const saved = localStorage.getItem('xiaoshouyi_identity');
     if (saved) {
         currentIdentity = saved;
-        document.getElementById('current-identity-name').textContent = saved;
+        updateIdentityDisplay(saved);
     }
 }
 
