@@ -618,23 +618,37 @@ function renderPipeline() {
 function renderPipelineFunnel() {
     const container = document.getElementById('pipeline-funnel');
     const maxCount = Math.max(...stageConfig.map(s => customers.filter(c => c.stage === s.key).length), 1);
+    const totalCount = customers.length;
     
-    container.innerHTML = stageConfig.map(stage => {
+    container.innerHTML = stageConfig.map((stage, index) => {
         const stageCustomers = customers.filter(c => c.stage === stage.key);
         const count = stageCustomers.length;
         const amount = stageCustomers.reduce((sum, c) => sum + (c.amount || 0), 0);
-        const widthPercent = Math.max((count / maxCount) * 100, 15);
+        const percent = totalCount > 0 ? Math.round((count / totalCount) * 100) : 0;
+        const widthPercent = Math.max((count / maxCount) * 100, 5);
         
         return `
-            <div class="flex items-center gap-4">
-                <div class="w-28 text-sm font-medium text-gray-600 flex-shrink-0">${stage.label}</div>
-                <div class="flex-1 h-12 bg-${stage.color}-100 rounded-lg relative overflow-hidden" style="width: ${widthPercent}%">
-                    <div class="absolute inset-0 flex items-center justify-between px-4">
-                        <span class="text-sm font-semibold text-${stage.color}-700">${count} 个</span>
-                        <span class="text-sm text-${stage.color}-600">${amount.toFixed(1)}万</span>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center text-sm font-semibold">${index + 1}</span>
+                        <span class="font-medium text-gray-900">${stage.label}</span>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold text-gray-900">${count} <span class="text-sm font-normal text-gray-500">个</span></div>
                     </div>
                 </div>
-                <div class="w-16 text-sm text-gray-500 text-right flex-shrink-0">${stage.probability}%</div>
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                    <span>预计金额</span>
+                    <span class="font-medium text-gray-700">${amount.toFixed(1)} 万</span>
+                </div>
+                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-gray-400 rounded-full transition-all duration-300" style="width: ${widthPercent}%"></div>
+                </div>
+                <div class="flex items-center justify-between text-xs text-gray-400 mt-2">
+                    <span>占比 ${percent}%</span>
+                    <span>成交概率 ${stage.probability}%</span>
+                </div>
             </div>
         `;
     }).join('');
