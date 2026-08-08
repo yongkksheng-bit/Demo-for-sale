@@ -1221,17 +1221,7 @@ async function sendMessage() {
         console.error('对话失败:', error);
         contentEl.textContent = '抱歉，出了点问题，请稍后再试。';
     }
-}        // 更新历史
-        chatHistory.push({ role: 'user', content: message });
-        chatHistory.push({ role: 'assistant', content: data.reply });
-        
-    } catch (error) {
-        console.error('对话失败:', error);
-        removeChatMessage(thinkingId);
-        addChatMessage('assistant', '抱歉，我遇到了一些问题，请稍后再试。');
-    }
 }
-
 function addChatMessage(role, content, isThinking = false) {
     const messagesContainer = document.getElementById('chat-messages');
     const id = 'chat-msg-' + Date.now();
