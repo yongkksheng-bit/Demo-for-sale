@@ -2013,13 +2013,19 @@ function scrollToTop() {
 
 // ========== ROI 计算器 ==========
 function calculateROI() {
-    const people = parseFloat(document.getElementById('roi-people').value) || 0;
+    const people = parseFloat(document.getElementById('roi-team-size').value) || 0;
     const salary = parseFloat(document.getElementById('roi-salary').value) || 0;
     const efficiency = parseFloat(document.getElementById('roi-efficiency').value) || 0;
-    const cost = parseFloat(document.getElementById('roi-cost').value) || 0; // 万元
-
-    // 计算年节省成本（万元）
-    const yearlySaving = (people * salary * 12 * efficiency / 100) / 10000;
+    const cost = parseFloat(document.getElementById('roi-cost').value) || 0;
+    
+    // 计算年节省成本（元）
+    const yearlySaving = people * salary * 12 * efficiency / 100;
+    
+    // 投入成本（元转万元）
+    const costWan = cost / 10000;
+    
+    // 年节省成本（万元）
+    const yearlySavingWan = yearlySaving / 10000;
     
     // ROI
     const roi = cost > 0 ? ((yearlySaving - cost) / cost * 100) : 0;
@@ -2027,28 +2033,12 @@ function calculateROI() {
     // 回报周期（月）
     const monthlySaving = yearlySaving / 12;
     const paybackPeriod = monthlySaving > 0 ? (cost / monthlySaving) : 0;
-
-    // 更新显示
-    document.getElementById('roi-saving').textContent = yearlySaving.toFixed(1) + '万';
-    document.getElementById('roi-cost-result').textContent = cost.toFixed(1) + '万';
-    document.getElementById('roi-ratio').textContent = roi.toFixed(0) + '%';
-    document.getElementById('roi-period').textContent = paybackPeriod.toFixed(1) + '个月';
-
-    // 生成话术建议
-    let suggestion = '';
-    if (paybackPeriod < 1) {
-        suggestion = `不到1个月就能回本，当年净赚${(yearlySaving - cost).toFixed(0)}万，性价比超高！`;
-    } else if (paybackPeriod < 3) {
-        suggestion = `${paybackPeriod.toFixed(1)}个月就能回本，当年投资回报率${roi.toFixed(0)}%，非常划算！`;
-    } else if (paybackPeriod < 6) {
-        suggestion = `半年内就能收回成本，全年ROI达${roi.toFixed(0)}%，投资价值显著！`;
-    } else if (paybackPeriod < 12) {
-        suggestion = `不到一年就能回本，长期来看收益可观，值得投入！`;
-    } else {
-        suggestion = `投资回报周期约${paybackPeriod.toFixed(0)}个月，建议从试点开始逐步推广。`;
-    }
     
-    document.getElementById('roi-suggestion').textContent = suggestion;
+    // 更新显示
+    document.getElementById('roi-savings').textContent = yearlySavingWan.toFixed(0) + ' 万';
+    document.getElementById('roi-investment').textContent = costWan.toFixed(0) + ' 万';
+    document.getElementById('roi-ratio').textContent = roi.toFixed(0) + '%';
+    document.getElementById('roi-period').textContent = paybackPeriod.toFixed(1) + ' 个月';
 }
 
 // 页面加载时计算一次
