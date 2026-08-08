@@ -720,9 +720,9 @@
                             class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">所属行业</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">客户行业</label>
                         <select id="modal-industry" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none transition-all">
-                            <option value="">请你卖什么？</option>
+                            <option value="">请选择行业</option>
                             <option value="零售电商">零售电商</option>
                             <option value="金融">金融</option>
                             <option value="制造">制造业</option>
@@ -887,7 +887,7 @@
                                         <i class="fa fa-industry text-gray-900 mr-1"></i> 所属行业
                                     </label>
                                     <select id="research-industry" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none transition-all">
-                                        <option value="">请你卖什么？（可选）</option>
+                                        <option value="">请选择行业</option>
                                         <option value="零售电商">零售电商</option>
                                         <option value="金融">金融</option>
                                         <option value="制造">制造业</option>
@@ -917,8 +917,7 @@
                                 </div>
                             </div>
                             
-                            <button onclick="generateResearch()" id="research-btn"
-                                class="w-full mt-6 py-4 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all">
+                            <button onclick="generateResearch()" class="w-full py-3 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all font-medium shadow-sm flex items-center justify-center space-x-2">
                                 <i class="fa fa-search mr-2"></i> 生成背调报告
                             </button>
                         </div>
@@ -1094,7 +1093,7 @@
                         </div>
 
                         <!-- 生成按钮 -->
-                        <button id="generate-btn" onclick="generateSolution()" class="w-full py-4 bg-gradient-primary rounded-xl font-semibold text-white hover:opacity-90 transition-all glow disabled:opacity-50 disabled:cursor-not-allowed hidden">
+                        <button onclick="generateSolution()" id="generate-btn" class="w-full py-4 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all font-semibold shadow-sm flex items-center justify-center space-x-2">
                             <i class="fa fa-magic mr-2"></i> 生成方案建议书
                         </button>
                     </div>
@@ -1150,19 +1149,14 @@
                             <div id="adjust-bar" class="p-4 border-t border-gray-100 hidden">
                                 <div class="flex items-center space-x-3">
                                     <input id="adjust-input" type="text" placeholder="对方案有调整需求？比如：改成中小企业版本、重点突出安全..." class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none transition-all">
-                                    <button onclick="adjustSolution()" class="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-900/90 transition-colors">
+                                    <button onclick="adjustSolution()" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all text-sm font-medium shadow-sm">
                                         <i class="fa fa-refresh mr-1"></i> 调整方案
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 智能对话区域 -->
-        <section id="chat" class="section hidden py-16">
+               id="chat" class="section hidden py-16">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">智能对话顾问</h2>
@@ -1211,6 +1205,10 @@
                             </button>
                         </div>
                         <p class="text-xs text-gray-400 mt-2 text-center">AI 生成内容仅供参考</p>
+                    </div>
+                </div>
+            </div>
+        内容仅供参考</p>
                     </div>
                 </div>
             </div>
