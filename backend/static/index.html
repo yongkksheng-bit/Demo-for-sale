@@ -188,9 +188,27 @@
                                         onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); heroChat(); }"></textarea>
                                     
                                     <!-- 左下角 + 号 -->
-                                    <button class="absolute left-4 bottom-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
+                                    <button onclick="toggleUploadMenu()" class="absolute left-4 bottom-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
                                         <i class="fa fa-plus text-lg"></i>
                                     </button>
+                                    <!-- 上传菜单 -->
+                                    <div id="upload-menu" class="absolute left-0 bottom-12 bg-white rounded-xl shadow-lg border border-gray-200 py-2 w-48 hidden z-10">
+                                        <button onclick="uploadBidDocument()" class="w-full px-4 py-2.5 text-left text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                                            <i class="fa fa-file-text-o text-gray-400"></i>
+                                            <span>上传招标文件</span>
+                                        </button>
+                                        <div class="border-t border-gray-100 my-1"></div>
+                                        <button class="w-full px-4 py-2.5 text-left text-gray-400 flex items-center gap-3 cursor-not-allowed">
+                                            <i class="fa fa-user-o text-gray-300"></i>
+                                            <span>上传客户资料</span>
+                                        </button>
+                                        <button class="w-full px-4 py-2.5 text-left text-gray-400 flex items-center gap-3 cursor-not-allowed">
+                                            <i class="fa fa-building-o text-gray-300"></i>
+                                            <span>上传竞品资料</span>
+                                        </button>
+                                    </div>
+                                    <!-- 隐藏的文件输入 -->
+                                    <input type="file" id="bid-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt">
                                     
                                     <!-- 右下角：发送按钮 -->
                                     <button onclick="heroChat()" class="absolute right-4 bottom-4 w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-all">
@@ -975,6 +993,32 @@
                 </div>
             </div>
         </section>
+
+        <!-- 招标文件分析 -->
+        <section id="bid-analysis" class="section hidden py-16 bg-gray-50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">招标文件智能分析</h2>
+                    <p class="text-gray-500">上传招标文件，AI 自动提炼关键需求、识别风险点、给出应对建议</p>
+                </div>
+                
+                <div id="bid-analysis-content">
+                    <!-- 内容由JS动态渲染 -->
+                    <div class="flex flex-col items-center justify-center py-20">
+                        <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fa fa-file-text-o text-4xl text-gray-400"></i>
+                        </div>
+                        <div class="text-gray-600 font-medium mb-2">上传招标文件开始分析</div>
+                        <div class="text-gray-400 text-sm mb-6">支持 PDF、Word、TXT 格式，最大 10MB</div>
+                        <button onclick="uploadBidDocument()" class="px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2">
+                            <i class="fa fa-upload"></i>
+                            选择文件
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- 方案生成区域 -->
         <section id="solution" class="section hidden py-16">

@@ -1,7 +1,7 @@
 """
 火山引擎智能方案顾问 - FastAPI 主入口
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
@@ -34,6 +34,7 @@ async def lifespan(app: FastAPI):
     from rag.vector_store import vector_store_manager
     from rag.chain import rag_chain
     from services.solution_service import solution_service
+    from services.bid_service import bid_analysis_service
     
     # 初始化向量库（如果有数据的话）
     try:
@@ -432,6 +433,42 @@ async def generate_company_research(request: CompanyResearchRequest):
 
 
 # 挂载静态文件（前端页面）- 必须放在所有路由最后
+
+@app.post("/api/v1/bid/analyze")
+async def analyze_bid_document(
+    file: UploadFile = File(...),
+    identity: str = Form("大客户销售")
+):
+    """
+    分析招标文件，提炼关键需求和风险点
+    """
+    try:
+        # 读取文件内容
+        file_content = await file.read()
+        filename = file.filename
+        
+        # 调用服务分析
+        result = bid_analysis_service.analyze_bid_document(
+            file_content=file_content,
+            filename=filename,
+            identity=identity
+        )
+        
+        return {
+            "success": True,
+            "message": "分析完成",
+            "data": result
+        }
+        
+    except Exception as e:
+        print(f"❌ 招标文件分析失败: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "message": f"分析失败: {str(e)}"
+        }
+
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
