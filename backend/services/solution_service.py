@@ -177,7 +177,8 @@ class SolutionService:
             "scenario": scenario,
             "company_size": company_size,
             "custom_requirements": custom_requirements,
-            "context": context
+            "context": context,
+            "identity": identity
         })
         
         return {
@@ -311,7 +312,8 @@ class SolutionService:
             "scenario": scenario,
             "company_size": company_size,
             "custom_requirements": custom_requirements,
-            "context": context
+            "context": context,
+            "identity": identity
         }):
             yield chunk
     
@@ -408,7 +410,8 @@ class SolutionService:
             "company_name": company_name,
             "industry": industry if industry else "待确认",
             "position": position if position else "待确认",
-            "focus": focus if focus else "全面了解"
+            "focus": focus if focus else "全面了解",
+            "identity": identity
         })
         
         return {
