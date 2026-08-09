@@ -136,7 +136,8 @@ class RAGChain:
                         self._safe_retrieve(x["question"], k=5)
                     ),
                     "question": lambda x: x["question"],
-                    "history": lambda x: x.get("history", [])
+                    "history": lambda x: x.get("history", []),
+                    "identity": lambda x: x.get("identity", "云与AI销售")
                 }
                 | chat_prompt
                 | llm
