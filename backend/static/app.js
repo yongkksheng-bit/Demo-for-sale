@@ -616,45 +616,70 @@ function renderPipeline() {
 
 // 渲染销售漏斗
 function renderPipelineFunnel() {
-    const container = document.getElementById('pipeline-funnel');
-    const maxCount = Math.max(...stageConfig.map(s => customers.filter(c => c.stage === s.key).length), 1);
-    const totalCount = customers.length;
+    const funnelEl = document.getElementById('pipeline-funnel');
+    if (!funnelEl) return;
     
-    container.innerHTML = stageConfig.map((stage, index) => {
+    const stages = [
+        { key: 'lead', name: '潜在客户', color: 'gray', probability: 10 },
+        { key: 'contact', name: '初步接触', color: 'blue', probability: 20 },
+        { key: 'requirement', name: '需求确认', color: 'cyan', probability: 40 },
+        { key: 'proposal', name: '方案沟通', color: 'purple', probability: 60 },
+        { key: 'negotiation', name: '商务谈判', color: 'orange', probability: 80 },
+        { key: 'won', name: '签约成交', color: 'green', probability: 100 },
+    ];
+    
+    // 计算每个阶段的客户数和金额
+    const stageData = stages.map(stage => {
         const stageCustomers = customers.filter(c => c.stage === stage.key);
         const count = stageCustomers.length;
         const amount = stageCustomers.reduce((sum, c) => sum + (c.amount || 0), 0);
-        const percent = totalCount > 0 ? Math.round((count / totalCount) * 100) : 0;
-        const widthPercent = Math.max((count / maxCount) * 100, 5);
+        return { ...stage, count, amount };
+    });
+    
+    const totalCount = stageData.reduce((sum, s) => sum + s.count, 0);
+    const totalAmount = stageData.reduce((sum, s) => sum + s.amount, 0);
+    
+    // 漏斗宽度比例：从100%到40%，每个阶段递减
+    const widthPercentages = [100, 90, 80, 70, 60, 50];
+    
+    let html = '<div class="space-y-2">';
+    
+    stageData.forEach((stage, index) => {
+        const widthPct = widthPercentages[index];
+        const percentage = totalCount > 0 ? ((stage.count / totalCount) * 100).toFixed(0) : 0;
         
-        return `
-            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-7 h-7 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center text-sm font-semibold">${index + 1}</span>
-                        <span class="font-medium text-gray-900">${stage.label}</span>
+        html += `
+            <div class="flex justify-center">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 transition-all hover:shadow-md" 
+                     style="width: ${widthPct}%; min-width: 280px;">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-sm font-bold text-gray-600 mr-3">
+                                ${index + 1}
+                            </div>
+                            <span class="font-semibold text-gray-900">${stage.name}</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-gray-900">${stage.count} 个</div>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-lg font-bold text-gray-900">${count} <span class="text-sm font-normal text-gray-500">个</span></div>
+                    <div class="text-sm text-gray-500 mb-2">预计金额：${stage.amount.toFixed(1)} 万</div>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 mb-1">
+                        <div class="bg-gray-400 h-1.5 rounded-full" style="width: ${percentage}%"></div>
                     </div>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                    <span>预计金额</span>
-                    <span class="font-medium text-gray-700">${amount.toFixed(1)} 万</span>
-                </div>
-                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-gray-400 rounded-full transition-all duration-300" style="width: ${widthPercent}%"></div>
-                </div>
-                <div class="flex items-center justify-between text-xs text-gray-400 mt-2">
-                    <span>占比 ${percent}%</span>
-                    <span>成交概率 ${stage.probability}%</span>
+                    <div class="flex justify-between text-xs text-gray-400">
+                        <span>占比 ${percentage}%</span>
+                        <span>成交概率 ${stage.probability}%</span>
+                    </div>
                 </div>
             </div>
         `;
-    }).join('');
+    });
+    
+    html += '</div>';
+    
+    funnelEl.innerHTML = html;
 }
-
-// 渲染各阶段客户列表
 function renderPipelineStages() {
     const container = document.getElementById('pipeline-stages');
     
@@ -1166,12 +1191,14 @@ function renderBidAnalysisResult(data) {
 
 // ========== 页面切换 ==========
 function showSection(sectionId) {
+    // 滚动到顶部
+    window.scrollTo(0, 0);
     // 隐藏所有 section
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
     // 显示目标 section
     document.getElementById(sectionId).classList.remove('hidden');
     // 滚动到顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
     
     // 更新侧边栏选中状态
     document.querySelectorAll('.nav-item').forEach(item => {
