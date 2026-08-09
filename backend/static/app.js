@@ -620,12 +620,12 @@ function renderPipelineFunnel() {
     if (!funnelEl) return;
     
     const stages = [
-        { key: 'lead', name: '潜在客户', color: 'gray', probability: 10 },
-        { key: 'contact', name: '初步接触', color: 'blue', probability: 20 },
-        { key: 'requirement', name: '需求确认', color: 'cyan', probability: 40 },
-        { key: 'proposal', name: '方案沟通', color: 'purple', probability: 60 },
-        { key: 'negotiation', name: '商务谈判', color: 'orange', probability: 80 },
-        { key: 'won', name: '签约成交', color: 'green', probability: 100 },
+        { key: 'lead', name: '潜在客户', probability: 10 },
+        { key: 'contact', name: '初步接触', probability: 20 },
+        { key: 'requirement', name: '需求确认', probability: 40 },
+        { key: 'proposal', name: '方案沟通', probability: 60 },
+        { key: 'negotiation', name: '商务谈判', probability: 80 },
+        { key: 'won', name: '签约成交', probability: 100 },
     ];
     
     // 计算每个阶段的客户数和金额
@@ -637,12 +637,11 @@ function renderPipelineFunnel() {
     });
     
     const totalCount = stageData.reduce((sum, s) => sum + s.count, 0);
-    const totalAmount = stageData.reduce((sum, s) => sum + s.amount, 0);
     
-    // 漏斗宽度比例：从100%到40%，每个阶段递减
-    const widthPercentages = [100, 90, 80, 70, 60, 50];
+    // 漏斗宽度：从100%到35%，递减更明显
+    const widthPercentages = [100, 88, 76, 64, 52, 40];
     
-    let html = '<div class="space-y-2">';
+    let html = '<div class="space-y-1 py-2">';
     
     stageData.forEach((stage, index) => {
         const widthPct = widthPercentages[index];
@@ -650,36 +649,32 @@ function renderPipelineFunnel() {
         
         html += `
             <div class="flex justify-center">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 transition-all hover:shadow-md" 
-                     style="width: ${widthPct}%; min-width: 280px;">
-                    <div class="flex items-center justify-between mb-2">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100 px-4 py-3 transition-all hover:shadow-md" 
+                     style="width: ${widthPct}%; min-width: 260px;">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-sm font-bold text-gray-600 mr-3">
-                                ${index + 1}
-                            </div>
-                            <span class="font-semibold text-gray-900">${stage.name}</span>
+                            <span class="text-sm font-bold text-gray-400 mr-2">${index + 1}</span>
+                            <span class="font-semibold text-gray-900 text-sm">${stage.name}</span>
                         </div>
                         <div class="text-right">
-                            <div class="font-bold text-gray-900">${stage.count} 个</div>
+                            <span class="font-bold text-gray-900 text-sm">${stage.count} 个</span>
                         </div>
-                    </div>
-                    <div class="text-sm text-gray-500 mb-2">预计金额：${stage.amount.toFixed(1)} 万</div>
-                    <div class="w-full bg-gray-100 rounded-full h-1.5 mb-1">
-                        <div class="bg-gray-400 h-1.5 rounded-full" style="width: ${percentage}%"></div>
-                    </div>
-                    <div class="flex justify-between text-xs text-gray-400">
-                        <span>占比 ${percentage}%</span>
-                        <span>成交概率 ${stage.probability}%</span>
                     </div>
                 </div>
             </div>
         `;
+        
+        // 阶段之间的漏斗连接（小三角形效果，用间距体现）
+        if (index < stageData.length - 1) {
+            html += '<div class="h-1"></div>';
+        }
     });
     
     html += '</div>';
     
     funnelEl.innerHTML = html;
 }
+
 function renderPipelineStages() {
     const container = document.getElementById('pipeline-stages');
     
@@ -1192,13 +1187,13 @@ function renderBidAnalysisResult(data) {
 // ========== 页面切换 ==========
 function showSection(sectionId) {
     // 滚动到顶部
-    window.scrollTo(0, 0);
+    // 滚动右侧内容区到顶部
+    const mainEl = document.querySelector('main');
+    if (mainEl) mainEl.scrollTop = 0;
     // 隐藏所有 section
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
     // 显示目标 section
     document.getElementById(sectionId).classList.remove('hidden');
-    // 滚动到顶部
-    window.scrollTo(0, 0);
     
     // 更新侧边栏选中状态
     document.querySelectorAll('.nav-item').forEach(item => {
