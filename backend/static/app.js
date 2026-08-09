@@ -650,7 +650,7 @@ function renderPipelineFunnel() {
         html += `
             <div class="flex justify-center">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-100 px-4 py-3 transition-all hover:shadow-md" 
-                     style="width: ${widthPct}%; min-width: 260px;">
+                     style="width: ${widthPct}%; min-width: 180px;">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <span class="text-sm font-bold text-gray-400 mr-2">${index + 1}</span>
