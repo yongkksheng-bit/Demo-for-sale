@@ -766,6 +766,7 @@ function generateChecklistFromCustomer() {
 // 从客户详情打开ROI
 function showROIFromCustomer() {
     showSection('tools');
+    selectTool('roi');
     // 滚动到ROI计算器
     setTimeout(() => {
         document.getElementById('roi-calculator')?.scrollIntoView({ behavior: 'smooth' });

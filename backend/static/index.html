@@ -922,7 +922,7 @@
                                 </div>
                             </div>
                             
-                            <button onclick="generateResearch()" class="w-full py-3 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all font-medium shadow-sm flex items-center justify-center space-x-2">
+                            <button id="research-btn" onclick="generateResearch()" class="w-full py-3 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all font-medium shadow-sm flex items-center justify-center space-x-2">
                                 <i class="fa fa-search mr-2"></i> 生成背调报告
                             </button>
                         </div>
@@ -1318,7 +1318,7 @@
                             <div class="space-y-4 max-w-lg">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">客户异议</label>
-                                    <textarea id="objection-text" rows="3" placeholder="输入客户提出的异议或疑问..." class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm resize-none"></textarea>
+                                    <textarea id="objection-input" rows="3" placeholder="输入客户提出的异议或疑问..." class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm resize-none"></textarea>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">客户行业</label>
@@ -1360,7 +1360,7 @@
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">竞品名称</label>
-                                        <input id="competitor-name" type="text" placeholder="如：阿里云" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
+                                        <input id="competitor-select" type="text" placeholder="如：阿里云" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">客户行业</label>
@@ -1401,11 +1401,11 @@
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">公司名称</label>
-                                        <input id="checklist-company" type="text" placeholder="客户公司名" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
+                                        <input id="visit-company" type="text" placeholder="客户公司名" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">客户行业</label>
-                                        <select id="checklist-industry" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm bg-white">
+                                        <select id="visit-industry" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm bg-white">
                                             <option value="零售电商">零售电商</option>
                                             <option value="金融">金融</option>
                                             <option value="制造">制造</option>
@@ -1420,7 +1420,7 @@
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">对接人职位</label>
-                                        <input id="checklist-position" type="text" placeholder="如：CTO" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
+                                        <input id="visit-position" type="text" placeholder="如：CTO" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 outline-none text-sm">
                                     </div>
                                 </div>
                                 <button onclick="generateVisitChecklist()" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all text-sm font-medium shadow-sm">
@@ -1428,15 +1428,16 @@
                                 </button>
                             </div>
                             
-                            <div id="checklist-result" class="hidden mt-6">
+                            <div id="visit-result" class="hidden mt-6">
                                 <div class="bg-gray-50 rounded-xl p-5 max-h-80 overflow-y-auto">
-                                    <div id="checklist-content" class="prose prose-sm max-w-none text-sm"></div>
+                                    <div id="visit-content" class="prose prose-sm max-w-none text-sm"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ROI计算器 -->
                         <div id="tool-content-roi" class="tool-content hidden">
+                            <div id="roi-calculator">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">ROI 投资回报计算器</h3>
                             <p class="text-gray-400 text-sm mb-6">快速计算方案的投资回报周期</p>
                             
@@ -1478,6 +1479,7 @@
                                         <div id="roi-period" class="text-xl font-semibold text-gray-700">0.9 个月</div>
                                     </div>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
