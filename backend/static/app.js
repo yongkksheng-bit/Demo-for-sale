@@ -1581,7 +1581,7 @@ async function sendMessage() {
     
     // 添加 AI 空消息，用于流式填充
     const messageId = addChatMessage('assistant', '', false);
-    const messageEl = document.getElementById(`chat-msg-${messageId}`);
+    const messageEl = document.getElementById(messageId);
     const contentEl = messageEl.querySelector('.chat-content');
     
     try {
