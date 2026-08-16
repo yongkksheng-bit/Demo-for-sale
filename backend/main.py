@@ -447,7 +447,15 @@ async def analyze_bid_document(
         file_content = await file.read()
         filename = file.filename
         
+        # 文件大小限制（10MB）
+        if len(file_content) > 10 * 1024 * 1024:
+            return {
+                "success": False,
+                "message": "文件大小不能超过10MB"
+            }
+        
         # 调用服务分析
+        from services.bid_service import bid_analysis_service
         result = bid_analysis_service.analyze_bid_document(
             file_content=file_content,
             filename=filename,

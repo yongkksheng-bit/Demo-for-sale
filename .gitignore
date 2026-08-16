@@ -70,6 +70,10 @@ htmlcov/
 .env.*.local
 
 # 截图和测试文件
+*.png
 console_screenshot.png
 test_all.py
 test_real_api.py
+progress.md
+findings.md
+task_plan.md

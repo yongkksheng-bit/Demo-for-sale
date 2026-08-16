@@ -3,7 +3,7 @@
  */
 
 // ========== 配置 ==========
-const API_BASE_URL = 'https://demo-for-sale.onrender.com/api/v1';
+const API_BASE_URL = '/api/v1';
 
 // ========== 状态 ==========
 let selectedIndustry = null;

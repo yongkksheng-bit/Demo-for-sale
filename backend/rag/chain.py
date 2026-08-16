@@ -124,11 +124,6 @@ class RAGChain:
                 ("human", "{question}")
             ])
             
-            # 检索器
-            retriever = vector_store_manager._get_vector_store().as_retriever(
-                search_kwargs={"k": 5}
-            )
-            
             # 构建链（使用安全检索）
             self._chat_chain = (
                 {
